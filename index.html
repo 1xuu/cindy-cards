@@ -44,6 +44,22 @@ body.glasses #app :is(button,input,textarea):focus{outline:3px solid #fff;outlin
 #app :is(button,input,textarea){scroll-margin:8px}
 body.glasses .card-text,body.glasses .question-box,body.glasses .option,body.glasses .feedback{max-height:none;overflow:visible;overflow-wrap:anywhere}
 body.glasses .flashcard{min-height:min(44dvh,260px)}
+/* Shared cloud status and compact Meta Display controls. */
+.cloud-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:820px;margin:-8px 0 24px;color:var(--muted);font-size:12px}
+.cloud-strip .mini-btn{padding:6px 12px;margin-left:auto}
+.cloud-indicator{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--blue)}
+.cloud-indicator.connected{background:var(--mint)}.cloud-indicator.error{background:var(--red)}
+body.glasses .cloud-strip{margin:-3px 0 10px;font-size:10px;gap:7px}
+body.glasses .cloud-strip .mini-btn{font-size:10px;padding:5px 8px}
+body.glasses .flashcard{min-height:min(36dvh,210px);padding:12px 14px}
+body.glasses .flashcard .card-side{margin-bottom:8px}
+body.glasses .flashcard .card-hint{margin-top:9px}
+body.glasses .card-actions{gap:6px;margin-top:7px}
+body.glasses .card-actions .action-group:first-child{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+body.glasses .card-actions .action-group:first-child .action-btn{min-height:43px}
+body.glasses .card-actions .action-group:last-child{width:100%;justify-content:space-between}
+body.glasses .card-actions .action-btn{padding:8px 11px}
+body.glasses .key-help{margin-top:5px;font-size:10px}
 </style>
 </head><body><div id="app"></div><script>
 /* Original study cards derived from the user-provided photographs of Phlebotomy Essentials, 8th ed., Chapters 7–9. */
@@ -3105,12 +3121,47 @@ window.STARTER_CARDS = [
   const userDecks = Array.isArray(stored.decks) ? stored.decks : [];
   const progress = stored.progress && typeof stored.progress === 'object' ? stored.progress : {};
   const safeCards = Array.isArray(window.STARTER_CARDS) ? window.STARTER_CARDS : [];
-  const builtin = [
-    {id:'all', name:'Chapters 7, 8 & 9', short:'All chapters', cards:safeCards},
-    {id:'ch7', name:'Chapter 7', short:'Equipment & additives', cards:safeCards.filter(c=>c.ch===7)},
-    {id:'ch8', name:'Chapter 8', short:'Venipuncture', cards:safeCards.filter(c=>c.ch===8)},
-    {id:'ch9', name:'Chapter 9', short:'Preanalytical care', cards:safeCards.filter(c=>c.ch===9)}
-  ];
+  // The publishable key is intentionally public. Supabase RLS must allow SELECT only.
+  const SUPABASE_URL = 'https://cersjmuckexsdrmlmrcv.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_iZzsSYi4A9YzZyQx-PUnOw_3f7Gaa2d';
+  const CLOUD_CACHE_KEY = 'cindy-cards.shared-cache.v1';
+  const builtin = [];
+  const numberFromChapter = value => {
+    const text=String(value ?? '').trim();
+    const found=text.match(/^(?:chapter\s*|ch\.?\s*)?(\d{1,3})(?:\b|$)/i);
+    return found ? Number(found[1]) : 0;
+  };
+  const chapterTitle = (card) => card.ch > 0 ? `Chapter ${card.ch}` : (card.chapterLabel || 'Other shared cards');
+  const normalizeQuestion = (card) => `${chapterTitle(card).toLowerCase()}|${String(card.q).trim().toLowerCase().replace(/\s+/g,' ')}`;
+  const readCachedCards = () => {
+    try {
+      const v=JSON.parse(localStorage.getItem(CLOUD_CACHE_KEY) || 'null');
+      return Array.isArray(v?.cards) ? v.cards.filter(c=>c && c.id && c.q && c.a) : [];
+    } catch { return []; }
+  };
+  let cloudCards = readCachedCards();
+  const fixedNames = {7:'Equipment & additives',8:'Venipuncture',9:'Preanalytical care'};
+  function rebuildBuiltin(){
+    const seen=new Map();
+    for(const c of safeCards)seen.set(normalizeQuestion(c),c);
+    for(const cloud of cloudCards){
+      const key=normalizeQuestion(cloud);
+      // A Supabase copy of an original question updates it without duplicating the card.
+      const original=seen.get(key);
+      seen.set(key,original?{...original,a:cloud.a,cloud:true}:{...cloud,cloud:true});
+    }
+    const merged=[...seen.values()];
+    const numeric=[...new Set(merged.map(c=>c.ch).filter(n=>n>0))].sort((a,b)=>a-b);
+    const other=[...new Set(merged.filter(c=>!c.ch).map(chapterTitle))].sort();
+    builtin.length=0;
+    builtin.push({id:'all',name:'All chapters',short:'All chapters',cards:merged});
+    for(const n of numeric)builtin.push({id:`ch${n}`,name:`Chapter ${n}`,short:fixedNames[n]||`Chapter ${n}`,cards:merged.filter(c=>c.ch===n)});
+    for(const title of other){
+      const slug=title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      builtin.push({id:`shared-${slug}`,name:title,short:'Shared deck',cards:merged.filter(c=>!c.ch && chapterTitle(c)===title)});
+    }
+  }
+  rebuildBuiltin();
   const decks = () => [...builtin, ...userDecks];
   const getDeck = () => decks().find(d=>d.id===state.deckId) || builtin[0];
   const pFor = id => progress[id] || (progress[id] = {known:false,learned:false,misses:0,correct:0});
@@ -3118,25 +3169,84 @@ window.STARTER_CARDS = [
   const qs = new URLSearchParams(location.search);
   const state = {
     screen:'home', deckId:stored.activeDeck || 'all', glasses:qs.get('glasses')==='1' || /\bMRBD\b|Meta Ray-Ban Display/i.test(navigator.userAgent),
-    seq:[], index:0, flipped:false, quiz:null, finished:null, homeFocus:null, importText:'', importName:'', importNotice:''
+    seq:[], index:0, flipped:false, quiz:null, finished:null, homeFocus:null, importText:'', importName:'', importNotice:'',
+    cloudStatus:cloudCards.length?'cached':'loading', cloudCount:cloudCards.length, cloudError:''
   };
   if (!decks().some(d=>d.id===state.deckId)) state.deckId='all';
   const percent = (n, d) => d ? Math.round(n/d*100) : 0;
   const niceTime = (seconds) => {seconds=Math.max(0,Math.ceil(seconds));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;};
+  let syncInFlight = null;
+  const syncLabel = () => {
+    switch(state.cloudStatus){
+      case 'ready': return `Connected · ${state.cloudCount} shared card${state.cloudCount===1?'':'s'}`;
+      case 'syncing': return 'Checking Supabase for shared cards…';
+      case 'cached': return `Using ${state.cloudCount} saved shared cards`;
+      case 'offline': return `Cloud unavailable · ${state.cloudCount} saved shared cards`;
+      default: return 'Connecting to Supabase…';
+    }
+  };
+  async function refreshCloudCards(){
+    if(syncInFlight)return syncInFlight;
+    state.cloudStatus='syncing';
+    state.cloudError='';
+    if(state.screen==='home')render();
+    syncInFlight=(async()=>{
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),20000);
+      try{
+        const rows=[];
+        const pageSize=1000;
+        for(let offset=0;offset<10000;offset+=pageSize){
+          const url=`${SUPABASE_URL}/rest/v1/flashcards?select=id,chapter,question,answer&order=id.asc&limit=${pageSize}&offset=${offset}`;
+          const res=await fetch(url,{method:'GET',headers:{'apikey':SUPABASE_PUBLISHABLE_KEY,'Accept':'application/json'},cache:'no-store',signal:controller.signal});
+          if(!res.ok){
+            let detail='';
+            try{const json=await res.json();detail=json.message||json.hint||'';}catch{}
+            throw new Error(`HTTP ${res.status}${detail?': '+detail:''}`);
+          }
+          const page=await res.json();
+          if(!Array.isArray(page))throw new Error('Unexpected response from Supabase');
+          rows.push(...page);
+          if(page.length<pageSize)break;
+        }
+        cloudCards=rows.map(row=>{
+          const q=String(row.question ?? '').trim(), a=String(row.answer ?? '').trim();
+          if(!q||!a)return null;
+          const ch=numberFromChapter(row.chapter);
+          const chapterLabel=ch?`Chapter ${ch}`:(String(row.chapter??'').trim().slice(0,70)||'Other shared cards');
+          return {id:`supabase-${row.id}`,ch,chapterLabel,q,a,page:null,topic:'Shared online'};
+        }).filter(Boolean);
+        try{localStorage.setItem(CLOUD_CACHE_KEY,JSON.stringify({cards:cloudCards,updatedAt:Date.now()}));}catch{}
+        rebuildBuiltin();
+        if(!decks().some(d=>d.id===state.deckId))state.deckId='all';
+        state.cloudCount=cloudCards.length;
+        state.cloudStatus='ready';
+      }catch(err){
+        state.cloudStatus='offline';
+        state.cloudError=String(err?.message||err);
+        console.warn('Cindy Cards cloud sync failed:',state.cloudError);
+      }finally{
+        clearTimeout(timeout);
+        if(state.screen==='home')render();
+      }
+    })();
+    try{await syncInFlight;}finally{syncInFlight=null;}
+  }
 
   function icon(c){return ({flash:'▣',learn:'✦',cram:'ϟ'})[c]||'•';}
   function renderHome(){
     const d=getDeck(), cards=d.cards, known=cards.filter(c=>pFor(c.id).known).length, mastered=cards.filter(c=>pFor(c.id).learned).length;
-    const sidebar = `<aside class="sidebar"><div class="brand"><span class="brand-mark">✚</span> Cindy Cards</div><div><div class="nav-label">STUDY DECKS</div><div class="deck-list">${decks().map(deck=>`<button data-key="deck-${escapeHTML(deck.id)}" data-action="deck" data-id="${escapeHTML(deck.id)}" class="deck-btn ${deck.id===state.deckId?'active':''}"><span class="deck-dot"></span>${escapeHTML(deck.name)}</button>`).join('')}</div></div><div class="sidebar-bottom"><button data-key="import-sidebar" class="outline-btn" data-action="import">＋ Import a deck</button><div class="tiny-muted">Your practice history stays in this browser. No account or AI API needed.</div></div></aside>`;
+    const sidebar = `<aside class="sidebar"><div class="brand"><span class="brand-mark">✚</span> Cindy Cards</div><div><div class="nav-label">STUDY DECKS</div><div class="deck-list">${decks().map(deck=>`<button data-key="deck-${escapeHTML(deck.id)}" data-action="deck" data-id="${escapeHTML(deck.id)}" class="deck-btn ${deck.id===state.deckId?'active':''}"><span class="deck-dot"></span>${escapeHTML(deck.name)}</button>`).join('')}</div></div><div class="sidebar-bottom"><button data-key="import-sidebar" class="outline-btn" data-action="import">＋ Import locally</button><div class="tiny-muted">Your study progress is saved only in this browser. Shared questions load from Supabase.</div></div></aside>`;
     return `<div class="app-shell">${sidebar}<main class="content"><div class="topbar"><div class="mobile-header"><span class="brand-mark" style="width:30px;height:30px;font-size:19px">✚</span> Cindy Cards</div><div class="badge"><span class="status-dot"></span> Ready to study</div><div class="topbar-actions"><button data-key="cycle" data-action="cycle" class="mini-btn" title="Switch chapter/deck">${escapeHTML(d.short || d.name)} ▾</button><button data-key="view" data-action="view" class="mini-btn" title="Switch to or from glasses preview">${state.glasses?'PC view':'Glasses view'}</button></div></div>
       <div class="eyebrow">PHLEBOTOMY • STUDY SPACE</div><h1 class="headline">Learn it. <em>Remember it.</em></h1><p class="lede">${escapeHTML(d.name)} · ${cards.length} flashcards. Practice what matters and keep track of what sticks.</p>
+      <div class="cloud-strip" role="status"><span class="cloud-indicator ${state.cloudStatus==='ready'?'connected':state.cloudStatus==='offline'?'error':''}"></span><span>${escapeHTML(syncLabel())}</span><button data-key="sync" data-action="sync" class="mini-btn" ${state.cloudStatus==='syncing'?'disabled':''}>↻ Refresh</button></div>
       <div class="stats"><div class="stat"><div class="stat-number">${cards.length}</div><div class="stat-caption">Total cards</div></div><div class="stat"><div class="stat-number">${known}</div><div class="stat-caption">Marked known</div></div><div class="stat"><div class="stat-number">${mastered}</div><div class="stat-caption">Learn mastered</div></div></div>
       <div class="section-heading"><h2>Choose a study mode</h2><span class="result-chip">${escapeHTML(d.short||'')}</span></div>
       <div class="modes">
         <button data-key="mode-flash" class="mode-card flash" data-action="flash"><span class="mode-icon">${icon('flash')}</span><span class="mode-name">Flashcards</span><span class="mode-desc">Flip through questions and answers. Flag what you know and what needs another look.</span><span class="mode-cta">Start reviewing →</span></button>
         <button data-key="mode-learn" class="mode-card learn" data-action="learn"><span class="mode-icon">${icon('learn')}</span><span class="mode-name">Learn</span><span class="mode-desc">Practice with multiple choice. Get each answer right twice to master a card.</span><span class="mode-cta">Start learning →</span></button>
         <button data-key="mode-cram" class="mode-card cram" data-action="cram"><span class="mode-icon">${icon('cram')}</span><span class="mode-name">Cram</span><span class="mode-desc">Three-minute sprint. Answer fast and revisit the questions you miss.</span><span class="mode-cta">Start a sprint →</span></button>
-      </div><div class="note"><b>Study source:</b> ${safeCards.length} original practice cards based on your photographed textbook pages (Chapters 7–9). Review your course materials and local procedures for clinical requirements. <button data-key="export" data-action="export" class="export-link">Export selected deck for Quizlet ↗</button> <button data-key="import-mobile" data-action="import" class="danger-link" style="color:var(--mint)">Import more cards →</button></div></main></div>`;
+      </div><div class="note"><b>Study source:</b> ${safeCards.length} original practice cards based on your photographed textbook pages (Chapters 7–9), plus ${cloudCards.length} shared Supabase records (matching questions are merged). ${state.cloudStatus==='offline'?`<b>Sync error:</b> ${escapeHTML(state.cloudError)}. `:''}Review your course materials and local procedures for clinical requirements. <button data-key="export" data-action="export" class="export-link">Export selected deck for Quizlet ↗</button> <button data-key="import-mobile" data-action="import" class="danger-link" style="color:var(--mint)">Import a personal deck →</button></div></main></div>`;
   }
   function studyHeader(mode, value, max){const d=getDeck();return `<div class="study-top"><button data-action="home" class="back-btn">← Back to decks</button><span class="name">${escapeHTML(d.name)}</span><span class="mode-tag">${escapeHTML(mode)}</span></div><div class="progress-header"><span>${escapeHTML(value)}</span><span>${escapeHTML(max)}</span></div>`;}
   function renderFlash(){
@@ -3165,6 +3275,7 @@ window.STARTER_CARDS = [
   }
   function startMode(mode){
     const d=getDeck();if(!d.cards.length)return;
+    if(state.screen==='home')pushStudyHistory();
     state.screen=mode;state.finished=null;
     if(mode==='flash') {state.seq=[...d.cards];state.index=0;state.flipped=false;state.quiz=null;}
     else {
@@ -3206,7 +3317,7 @@ window.STARTER_CARDS = [
     <div class="study-footer"><span class="result-chip">${isCram?'Missed cards come back':'Keep going until each card is mastered'}</span><button class="action-btn primary" data-action="${q.feedback?'advance':'submit'}">${q.feedback?'Continue →':'Check answer'}</button></div><div class="key-help">Arrows move highlight · Select / Enter activates · Back / Esc returns to decks</div></div></main></div>`;
   }
   function renderResults(){const r=state.finished;const isCram=r.mode==='cram';return `<div class="app-shell"><main class="content"><div class="study-shell"><div class="study-top"><button class="back-btn" data-action="home">← Back to decks</button><span class="mode-tag">${isCram?'CRAM COMPLETE':'LEARN COMPLETE'}</span></div><div class="summary"><div class="summary-emoji">${isCram?'⚡':'✦'}</div><h2>${isCram?'Sprint finished!':'Session mastered!'}</h2><p>${isCram?'Great work under the clock. Try another sprint or review the cards again.':'Each practice card was answered correctly twice in this session.'}</p><div class="summary-grid"><div><b>${r.correct}</b><span>Correct answers</span></div><div><b>${r.misses}</b><span>Missed answers</span></div><div><b>${percent(r.correct,r.attempts)}%</b><span>Accuracy</span></div></div><div class="action-group" style="justify-content:center"><button data-key="restart" data-action="restart" class="action-btn primary">Practice again</button><button data-key="home" data-action="home" class="action-btn">Back to decks</button></div></div></div></main></div>`;}
-  function renderImport(){return `<div class="modal-screen"><div class="modal-box"><button data-action="home" class="back-btn">← Back to decks</button><p class="eyebrow">ADD YOUR OWN MATERIAL</p><h1>Import flashcards</h1><p>Paste Quizlet export text (one card per line, with a tab between question and answer) or choose a TSV, TXT, or CSV file. Imported decks stay on this device unless you add them to the hosted site's source files.</p><label class="field-label" for="deckname">Deck name</label><input id="deckname" class="text-field" maxlength="80" placeholder="Chapter 7 textbook review" value="${escapeHTML(state.importName)}"><label class="field-label" for="deckfile">Upload study cards</label><input id="deckfile" class="text-field" type="file" accept=".tsv,.txt,.csv,.json,text/plain,text/tab-separated-values,text/csv,application/json"><label class="field-label" for="importtext">Or paste questions and answers</label><textarea id="importtext" class="text-field import-text" placeholder="What is EDTA?&#9;An additive that binds calcium.&#10;What is a CBC?&#9;Complete blood count.">${escapeHTML(state.importText)}</textarea><div class="modal-buttons"><button data-action="create-deck" class="action-btn primary">Import cards</button><button data-action="home" class="action-btn">Cancel</button></div><p class="import-status" id="importstatus">${escapeHTML(state.importNotice)}</p></div></div>`;}
+  function renderImport(){return `<div class="modal-screen"><div class="modal-box"><button data-action="home" class="back-btn">← Back to decks</button><p class="eyebrow">ADD YOUR OWN MATERIAL</p><h1>Import flashcards</h1><p>Paste Quizlet export text (one card per line, with a tab between question and answer) or choose a TSV, TXT, or CSV file. This creates a <b>personal deck on this device only</b>. To share cards with your girlfriend's glasses, import a CSV into the <b>flashcards</b> table in Supabase and press Refresh on the Cindy Cards home screen.</p><label class="field-label" for="deckname">Deck name</label><input id="deckname" class="text-field" maxlength="80" placeholder="Chapter 7 textbook review" value="${escapeHTML(state.importName)}"><label class="field-label" for="deckfile">Upload study cards</label><input id="deckfile" class="text-field" type="file" accept=".tsv,.txt,.csv,.json,text/plain,text/tab-separated-values,text/csv,application/json"><label class="field-label" for="importtext">Or paste questions and answers</label><textarea id="importtext" class="text-field import-text" placeholder="What is EDTA?&#9;An additive that binds calcium.&#10;What is a CBC?&#9;Complete blood count.">${escapeHTML(state.importText)}</textarea><div class="modal-buttons"><button data-action="create-deck" class="action-btn primary">Import cards</button><button data-action="home" class="action-btn">Cancel</button></div><p class="import-status" id="importstatus">${escapeHTML(state.importNotice)}</p></div></div>`;}
   function render(preferred = focusKey(document.activeElement)){
     document.body.classList.toggle('glasses',state.glasses);const root=$('#app');
     root.innerHTML=state.screen==='home'?renderHome():state.screen==='flash'?renderFlash():['learn','cram'].includes(state.screen)?renderQuiz():state.screen==='results'?renderResults():renderImport();
@@ -3249,6 +3360,7 @@ window.STARTER_CARDS = [
     switch(action){
       case 'home':goHome();break;
       case 'view':state.glasses=!state.glasses;render();break;
+      case 'sync':refreshCloudCards();break;
       case 'cycle':{const ds=decks(),i=ds.findIndex(d=>d.id===state.deckId);changeDeck(ds[(i+1)%ds.length].id);break;}
       case 'deck':changeDeck(el.dataset.id);break;
       case 'flash':case 'learn':case 'cram':state.homeFocus=focusKey(el);startMode(action);break;
@@ -3262,7 +3374,7 @@ window.STARTER_CARDS = [
       case 'submit':answerQuiz();break;
       case 'advance':afterAnswer();break;
       case 'restart':startMode(state.finished?.mode||'flash');break;
-      case 'import':state.homeFocus=focusKey(el);state.screen='import';render('home');break;
+      case 'import':state.homeFocus=focusKey(el);if(state.screen==='home')pushStudyHistory();state.screen='import';render('home');break;
       case 'create-deck':importDeck();break;
       case 'export':downloadDeck();break;
     }
@@ -3287,12 +3399,18 @@ window.STARTER_CARDS = [
     el.scrollIntoView({block:'nearest',inline:'nearest'});
   }
 
-  function goHome(){
+  function pushStudyHistory(){
+    // A native/browser Back gesture can pop this entry rather than closing the site.
+    try{history.pushState({cindyCardsScreen:true},'',location.href);}catch{}
+  }
+  function goHome(fromBack=false){
     state.screen='home';
     state.quiz=null;
     state.finished=null;
     render(state.homeFocus);
+    if(!fromBack && history.state?.cindyCardsScreen){try{history.back();}catch{}}
   }
+  window.addEventListener('popstate',()=>{if(state.screen!=='home')goHome(true);});
 
   $('#app').addEventListener('focusin', (event) => {
     lastFocus = focusKey(event.target);
@@ -3308,7 +3426,7 @@ window.STARTER_CARDS = [
     const {key, target} = event;
     if(event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey)return;
     const inField = target.matches?.('input,textarea');
-    if(key==='Escape' || key==='BrowserBack' || (key==='Backspace' && !inField)){
+    if(key==='Escape' || key==='BrowserBack' || key==='GoBack' || key==='Back' || (key==='Backspace' && !inField)){
       if(state.screen==='home')return;
       event.preventDefault();
       if(!event.repeat)goHome();
@@ -3352,6 +3470,8 @@ window.STARTER_CARDS = [
   });
   setInterval(()=>{if(state.screen==='cram'&&state.quiz){const secs=(state.quiz.deadline-Date.now())/1000;if(secs<=0){finishQuiz();return;}const el=$('#clock');if(el)el.textContent=niceTime(secs);}},250);
   render();
-  window.CindyCardsTest={parseImported,getDeck,percent};
+  // Built-in questions are immediately usable; shared cards refresh asynchronously.
+  refreshCloudCards();
+  window.CindyCardsTest={parseImported,getDeck,percent,numberFromChapter,refreshCloudCards};
 })();
 </script></body></html>
