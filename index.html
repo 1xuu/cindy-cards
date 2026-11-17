@@ -3162,7 +3162,7 @@ window.STARTER_CARDS = [
   let managerNotice = '', managerError = '', editingCardId = null, managerPage = 0;
   let managerFilter = '', managerBulkText = '', managerBulkChapter = 'Chapter 9';
   const AUTH_RETURN = /(?:access_token|type=recovery|error_description)=/i.test(location.hash) || /[?&]code=/.test(location.search);
-  if (location.hash.includes('type=recovery')) managerMode = 'new-password';
+  if (/type=(?:recovery|invite)(?:&|$)/i.test(location.hash)) managerMode = 'new-password';
 
   const builtin = [];
   const numberFromChapter = value => {
@@ -3328,7 +3328,7 @@ window.STARTER_CARDS = [
     const head=`<div class="manager-head"><div><span class="eyebrow">CINDY CARDS · PRIVATE EDITOR</span><h1>Flashcard Manager</h1></div><button data-key="manager-back" data-action="home" class="back-btn">← Back to studying</button></div>`;
     let contents='';
     if(authStatus==='idle'||authStatus==='loading'){
-      contents='<div class="manager-panel"><h2>Connecting to your account…</h2><p>Study cards are still available without signing in.</p></div>';
+      contents='<div class="manager-panel"><h2>Connecting to your account…</h2><p>Study cards are still available without signing in. If this page does not change, use Retry connection.</p><button class="action-btn" data-action="auth-retry">Retry connection</button></div>';
     }else if(authStatus==='error'){
       contents='<div class="manager-panel"><p>Could not complete the account connection. You can retry.</p><button class="action-btn" data-action="auth-retry">Retry connection</button></div>';
     }else if(!authUser){
@@ -3747,6 +3747,9 @@ window.STARTER_CARDS = [
   });
   setInterval(()=>{if(state.screen==='cram'&&state.quiz){const secs=(state.quiz.deadline-Date.now())/1000;if(secs<=0){finishQuiz();return;}const el=$('#clock');if(el)el.textContent=niceTime(secs);}},250);
   render();
+  // Email confirmation and invitation links open the manager directly. Initialize Auth here;
+  // otherwise the manager would remain on 'Connecting to your account' indefinitely.
+  if (AUTH_RETURN) void ensureAuth().catch(() => {});
   // Built-in questions are immediately usable; shared cards refresh asynchronously.
   refreshCloudCards();
   window.CindyCardsTest={parseImported,getDeck,percent,numberFromChapter,refreshCloudCards};
