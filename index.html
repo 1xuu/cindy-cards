@@ -60,6 +60,36 @@ body.glasses .card-actions .action-group:first-child .action-btn{min-height:43px
 body.glasses .card-actions .action-group:last-child{width:100%;justify-content:space-between}
 body.glasses .card-actions .action-btn{padding:8px 11px}
 body.glasses .key-help{margin-top:5px;font-size:10px}
+
+/* Cindy Cards account and shared flashcard manager. Admin tasks are designed for phone/PC. */
+.manager-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.manager-head h1{font-size:clamp(25px,3vw,36px);letter-spacing:-.045em;margin:8px 0 0}
+.manager-wrap{max-width:1050px;margin:auto;padding-bottom:42px}
+.manager-panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin:14px 0}
+.manager-panel h2{font-size:18px;letter-spacing:-.025em;margin:0 0 8px}
+.manager-panel p{font-size:13px;line-height:1.55;color:var(--muted)}
+.manager-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:15px}
+.manager-input{display:block;width:100%;padding:11px 12px;border-radius:11px;border:1px solid #475975;background:#0c1727;color:var(--text);font-size:14px;line-height:1.4}
+.manager-input:focus-visible{outline:3px solid var(--mint);outline-offset:1px}
+textarea.manager-input{min-height:100px;resize:vertical}
+.manager-label{display:block;font-size:12px;color:#c6d7ee;font-weight:700;margin:14px 0 6px}
+.manager-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.manager-note{border-radius:11px;border:1px solid #43516a;background:#172238;padding:11px 13px;font-size:13px;line-height:1.5;margin:15px 0}
+.manager-error{border-color:#8d4b59;color:#ffd5d7;background:#2e1926}
+.manager-success{border-color:#3c7a70;color:#b9fce5;background:#102d2c}
+.manager-card-row{border:1px solid var(--line);border-radius:12px;padding:12px;margin:9px 0;background:#17243a}
+.manager-card-row strong{display:block;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.manager-card-row small{display:block;color:var(--muted);margin:5px 0;font-size:11px}
+.manager-card-row .answer{font-size:12px;color:#cadcf1;overflow-wrap:anywhere}
+.manager-card-row .manager-buttons{margin-top:9px}
+.manager-panel .mini-btn:disabled,.manager-panel .action-btn:disabled{opacity:.45}
+.manager-link{background:none;border:0;color:var(--mint);text-decoration:underline;cursor:pointer;padding:6px;font-size:12px}
+.manager-identity{overflow-wrap:anywhere;font-size:12px;background:#0a1526;border:1px solid #3c4d66;padding:11px;border-radius:8px;user-select:all}
+.manager-total{color:var(--muted);font-size:12px}
+@media(max-width:780px){.manager-grid{grid-template-columns:1fr}.manager-panel{padding:16px}.manager-head{align-items:flex-start}}
+body.glasses .manager-only{display:none}
+body.glasses .manager-panel{padding:12px}
+body.glasses .manager-grid{grid-template-columns:1fr}
 </style>
 </head><body><div id="app"></div><script>
 /* Original study cards derived from the user-provided photographs of Phlebotomy Essentials, 8th ed., Chapters 7–9. */
@@ -3125,6 +3155,15 @@ window.STARTER_CARDS = [
   const SUPABASE_URL = 'https://cersjmuckexsdrmlmrcv.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_iZzsSYi4A9YzZyQx-PUnOw_3f7Gaa2d';
   const CLOUD_CACHE_KEY = 'cindy-cards.shared-cache.v1';
+
+  const MANAGER_CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+  let authClient = null, authLoading = null, authUser = null, editorAllowed = false;
+  let authStatus = 'idle', managerMode = 'login', managerBusy = false;
+  let managerNotice = '', managerError = '', editingCardId = null, managerPage = 0;
+  let managerFilter = '', managerBulkText = '', managerBulkChapter = 'Chapter 9';
+  const AUTH_RETURN = /(?:access_token|type=recovery|error_description)=/i.test(location.hash) || /[?&]code=/.test(location.search);
+  if (location.hash.includes('type=recovery')) managerMode = 'new-password';
+
   const builtin = [];
   const numberFromChapter = value => {
     const text=String(value ?? '').trim();
@@ -3173,6 +3212,7 @@ window.STARTER_CARDS = [
     cloudStatus:cloudCards.length?'cached':'loading', cloudCount:cloudCards.length, cloudError:''
   };
   if (!decks().some(d=>d.id===state.deckId)) state.deckId='all';
+  if (AUTH_RETURN) state.screen = 'manager';
   const percent = (n, d) => d ? Math.round(n/d*100) : 0;
   const niceTime = (seconds) => {seconds=Math.max(0,Math.ceil(seconds));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;};
   let syncInFlight = null;
@@ -3233,11 +3273,220 @@ window.STARTER_CARDS = [
     try{await syncInFlight;}finally{syncInFlight=null;}
   }
 
+
+  function managerInfo(message, error=false){managerNotice=error?'':message;managerError=error?message:'';if(state.screen==='manager')render();}
+  const authRedirect = () => location.origin + location.pathname;
+  async function ensureAuth(){
+    if(authClient)return authClient;
+    if(authLoading)return authLoading;
+    authStatus='loading'; if(state.screen==='manager')render();
+    authLoading = (async () => {
+      if(!window.supabase?.createClient){
+        await new Promise((resolve,reject)=>{
+          const script=document.createElement('script');script.src=MANAGER_CDN;script.async=true;
+          script.onload=resolve;script.onerror=()=>reject(new Error('Could not load Supabase login library. Check your internet connection.'));
+          document.head.append(script);
+        });
+      }
+      if(!window.supabase?.createClient)throw new Error('Supabase login library is unavailable.');
+      authClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+        auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true,flowType:'implicit'}
+      });
+      authClient.auth.onAuthStateChange((event)=>{
+        if(event==='PASSWORD_RECOVERY')managerMode='new-password';
+        // Schedule network calls outside the auth event callback to avoid auth-lock deadlocks.
+        setTimeout(()=>{void refreshAuth();},0);
+      });
+      await refreshAuth();
+      return authClient;
+    })().catch(err=>{authStatus='error';managerError=err.message||String(err);throw err;})
+      .finally(()=>{authLoading=null;if(state.screen==='manager')render();});
+    return authLoading;
+  }
+  async function refreshAuth(){
+    if(!authClient)return;
+    try{
+      const {data,error}=await authClient.auth.getUser();
+      if(error)throw error;
+      authUser=data.user||null;
+      editorAllowed=false;
+      if(authUser){
+        const result=await authClient.from('cindy_editors').select('user_id').eq('user_id',authUser.id).maybeSingle();
+        if(result.error)throw new Error('Editor access check failed: '+result.error.message+' (run the supplied setup SQL).');
+        editorAllowed=!!result.data;
+      }
+      authStatus='ready';
+      managerError='';
+      if(state.screen==='manager')render();
+    }catch(err){authStatus='error';editorAllowed=false;managerError=String(err?.message||err);if(state.screen==='manager')render();}
+  }
+  function managerBanner(){
+    return `${managerError?`<div class="manager-note manager-error" role="alert">${escapeHTML(managerError)}</div>`:''}
+      ${managerNotice?`<div class="manager-note manager-success" role="status">${escapeHTML(managerNotice)}</div>`:''}`;
+  }
+  function renderManager(){
+    const head=`<div class="manager-head"><div><span class="eyebrow">CINDY CARDS · PRIVATE EDITOR</span><h1>Flashcard Manager</h1></div><button data-key="manager-back" data-action="home" class="back-btn">← Back to studying</button></div>`;
+    let contents='';
+    if(authStatus==='idle'||authStatus==='loading'){
+      contents='<div class="manager-panel"><h2>Connecting to your account…</h2><p>Study cards are still available without signing in.</p></div>';
+    }else if(authStatus==='error'){
+      contents='<div class="manager-panel"><p>Could not complete the account connection. You can retry.</p><button class="action-btn" data-action="auth-retry">Retry connection</button></div>';
+    }else if(!authUser){
+      const signup=managerMode==='signup', forgot=managerMode==='forgot';
+      contents=`<div class="manager-panel" style="max-width:490px"><h2>${signup?'Create your Cindy Cards account':forgot?'Reset your password':'Sign in to manage cards'}</h2>
+      <p>Both of you can study without an account. To add shared questions, create an account and get editor approval once.</p>
+      <form id="cc-authform"><label class="manager-label" for="cc-email">Email address</label><input class="manager-input" id="cc-email" type="email" autocomplete="email" required>
+      ${forgot?'':`<label class="manager-label" for="cc-password">Password</label><input class="manager-input" id="cc-password" type="password" autocomplete="${signup?'new-password':'current-password'}" required minlength="6">`}
+      <div class="manager-buttons"><button type="submit" class="action-btn primary" ${managerBusy?'disabled':''}>${managerBusy?'Working…':signup?'Create account':forgot?'Send reset email':'Sign in'}</button></div></form>
+      <div class="manager-buttons"><button class="manager-link" data-action="auth-mode" data-mode="${signup||forgot?'login':'signup'}">${signup||forgot?'Already have an account? Sign in':'Create an account'}</button>
+      ${signup||forgot?'':`<button class="manager-link" data-action="auth-mode" data-mode="forgot">Forgot password?</button>`}</div></div>`;
+    }else if(managerMode==='new-password'){
+      contents=`<div class="manager-panel" style="max-width:490px"><h2>Choose a new password</h2><form id="cc-newpassform"><label class="manager-label" for="cc-newpass">New password</label><input id="cc-newpass" class="manager-input" type="password" autocomplete="new-password" minlength="6" required><div class="manager-buttons"><button class="action-btn primary" type="submit">Update password</button></div></form></div>`;
+    }else if(!editorAllowed){
+      contents=`<div class="manager-panel"><h2>You're signed in, but not yet an editor</h2><p>${escapeHTML(authUser.email||'Your account')} can study normally. Ask the site owner to approve this account in Supabase before it can add shared questions.</p>
+      <p>Your account ID (copy this to the site owner):</p><div class="manager-identity" id="cc-user-id">${escapeHTML(authUser.id)}</div>
+      <div class="manager-buttons"><button data-action="copy-uid" class="action-btn">Copy account ID</button><button data-action="check-editor" class="action-btn primary">Check approval</button><button data-action="logout" class="action-btn">Sign out</button></div></div>`;
+    }else{
+      const editing=cloudCards.find(c=>String(c.id)===String(editingCardId));
+      const visible=cloudCards.filter(c=>(c.q+' '+c.a+' '+chapterTitle(c)).toLowerCase().includes(managerFilter.toLowerCase()));
+      const pages=Math.max(1,Math.ceil(visible.length/10));managerPage=Math.min(managerPage,pages-1);
+      const cards=visible.slice(managerPage*10,(managerPage+1)*10);
+      contents=`<div class="manager-panel"><div class="manager-head"><div><h2>Shared flashcards</h2><p>Signed in as ${escapeHTML(authUser.email||'Editor')} · ${cloudCards.length} cloud cards · Ready for her glasses after refresh</p></div><div class="manager-buttons"><button class="action-btn" data-action="sync-manager">↻ Refresh</button><button class="action-btn" data-action="logout">Sign out</button></div></div></div>
+      <div class="manager-grid"><section class="manager-panel"><h2>${editing?'Edit shared flashcard':'Add a shared flashcard'}</h2>
+      <form id="cc-cardform"><label class="manager-label" for="cc-chapter">Study set / chapter</label><input class="manager-input" id="cc-chapter" maxlength="80" value="${escapeHTML(editing?.chapterLabel||'Chapter 9')}" placeholder="Chapter 10" required>
+      <label class="manager-label" for="cc-question">Question</label><textarea class="manager-input" id="cc-question" maxlength="5000" required>${escapeHTML(editing?.q||'')}</textarea>
+      <label class="manager-label" for="cc-answer">Answer</label><textarea class="manager-input" id="cc-answer" maxlength="5000" required>${escapeHTML(editing?.a||'')}</textarea>
+      <div class="manager-buttons"><button type="submit" class="action-btn primary" ${managerBusy?'disabled':''}>${editing?'Save changes':'Add card'}</button>${editing?'<button data-action="cancel-edit" type="button" class="action-btn">Cancel edit</button>':''}</div></form></section>
+      <section class="manager-panel"><h2>Import Quizlet or CSV</h2><p>Paste Quizlet term/definition pairs separated by tabs, or upload a CSV with chapter, question and answer columns. New cards are saved online for both of you.</p>
+      <label class="manager-label" for="cc-bulkchapter">Chapter for two-column imports</label><input class="manager-input" id="cc-bulkchapter" value="${escapeHTML(managerBulkChapter)}" maxlength="80">
+      <label class="manager-label" for="cc-bulkfile">Upload CSV, TSV, or TXT</label><input class="manager-input" id="cc-bulkfile" type="file" accept=".csv,.tsv,.txt,text/plain,text/csv,text/tab-separated-values">
+      <label class="manager-label" for="cc-bulktext">Or paste flashcards</label><textarea id="cc-bulktext" class="manager-input" style="min-height:140px" placeholder="What is EDTA?&#9;It binds calcium.">${escapeHTML(managerBulkText)}</textarea>
+      <div class="manager-buttons"><button data-action="bulk-save" class="action-btn primary" ${managerBusy?'disabled':''}>Import to shared cards</button></div></section></div>
+      <section class="manager-panel"><h2>Find and edit cards</h2><label class="manager-label" for="cc-find">Search cloud cards (not built-in textbook cards)</label>
+      <div class="manager-buttons"><input id="cc-find" class="manager-input" style="flex:1;min-width:180px" value="${escapeHTML(managerFilter)}" placeholder="Search question, answer, or chapter"><button class="action-btn" data-action="filter-cards">Search</button></div>
+      <p class="manager-total">Showing ${cards.length} of ${visible.length} matching cloud cards</p>
+      ${cards.length?cards.map(c=>`<div class="manager-card-row"><small>${escapeHTML(chapterTitle(c))} · ${escapeHTML(c.id)}</small><strong>${escapeHTML(c.q)}</strong><div class="answer">${escapeHTML(c.a)}</div><div class="manager-buttons"><button class="mini-btn" data-action="edit-card" data-id="${escapeHTML(c.id)}">Edit</button><button class="mini-btn" data-action="delete-card" data-id="${escapeHTML(c.id)}">Delete</button></div></div>`).join(''):'<p>No cloud cards match. Built-in cards will still be available for studying.</p>'}
+      <div class="manager-buttons"><button class="mini-btn" data-action="manager-prev" ${managerPage===0?'disabled':''}>← Previous</button><span class="manager-total">Page ${managerPage+1} of ${pages}</span><button class="mini-btn" data-action="manager-next" ${managerPage>=pages-1?'disabled':''}>Next →</button></div></section>`;
+    }
+    return `<div class="app-shell"><main class="content"><div class="manager-wrap">${head}${managerBanner()}${contents}</div></main></div>`;
+  }
+  async function submitAuth(){
+    try{
+      const email=$('#cc-email')?.value.trim();const password=$('#cc-password')?.value||'';
+      if(!email)throw new Error('Enter your email address.');
+      if(managerMode!=='forgot' && password.length<6)throw new Error('Password must be at least 6 characters.');
+      managerBusy=true;managerError='';managerNotice='';
+      const sb=await ensureAuth();let result;
+      if(managerMode==='signup')result=await sb.auth.signUp({email,password,options:{emailRedirectTo:authRedirect()}});
+      else if(managerMode==='forgot')result=await sb.auth.resetPasswordForEmail(email,{redirectTo:authRedirect()});
+      else result=await sb.auth.signInWithPassword({email,password});
+      if(result.error)throw result.error;
+      managerNotice=managerMode==='signup' ? 'Account request sent. If email confirmation is enabled, check your inbox and open the link. After signing in, ask the site owner to approve your editor access.'
+        : managerMode==='forgot'?'If that address is registered, check your email for the password reset link.':'Signed in successfully.';
+      if(managerMode==='forgot')managerMode='login';
+      await refreshAuth();
+    }catch(err){managerError=String(err?.message||err);managerNotice='';}
+    finally{managerBusy=false;render();}
+  }
+  async function submitNewPassword(){
+    try{const password=$('#cc-newpass')?.value||'';if(password.length<6)throw new Error('Please use at least 6 characters.');
+      const result=await (await ensureAuth()).auth.updateUser({password});if(result.error)throw result.error;
+      managerMode='login';managerInfo('Password updated. You can now use the Flashcard Manager.');
+    }catch(err){managerInfo(String(err?.message||err),true);}
+  }
+  async function saveCard(){
+    if(managerBusy||!editorAllowed)return;
+    const chapter=$('#cc-chapter')?.value.trim(), question=$('#cc-question')?.value.trim(), answer=$('#cc-answer')?.value.trim();
+    if(!chapter||!question||!answer){managerInfo('Fill in the chapter, question, and answer.',true);return;}
+    managerBusy=true;managerError='';managerNotice='';
+    const wasEditing=editingCardId;
+    try{
+      let req=authClient.from('flashcards');let result;
+      if(wasEditing){const id=String(wasEditing).replace(/^supabase-/,'');result=await req.update({chapter,question,answer}).eq('id',id).select('id');}
+      else result=await req.insert([{chapter,question,answer}]).select('id');
+      if(result.error)throw result.error;
+      if(!result.data?.length)throw new Error('No rows were changed. Check editor permissions.');
+      editingCardId=null;await refreshCloudCards();
+      managerNotice=wasEditing?'Flashcard updated and published.':'New flashcard published. She can refresh Cindy Cards to see it.';
+    }catch(err){managerError=String(err?.message||err);}finally{managerBusy=false;render();}
+  }
+  function parseSharedImport(input, fallbackChapter){
+    const text=String(input??'').replace(/^\uFEFF/,'');
+    if(!text.trim())return [];
+    if(text.trimStart().startsWith('[')){
+      try{const parsed=JSON.parse(text);if(Array.isArray(parsed))return parsed.map(x=>({chapter:String(x.chapter??x.ch??fallbackChapter).trim(),question:String(x.question??x.q??x.front??x.term??'').trim(),answer:String(x.answer??x.a??x.back??x.definition??'').trim()})).filter(x=>x.chapter&&x.question&&x.answer);}catch{}
+    }
+    // Read quoted CSV/TSV fields, including embedded line breaks and escaped double-quotes.
+    const firstLine=text.split(/\r?\n/).find(line=>line.trim())||'';
+    const delimiter=firstLine.includes('\t')?'\t':',';
+    const rows=[];let row=[],field='',quoted=false;
+    for(let i=0;i<text.length;i++){
+      const c=text[i];
+      if(c==='"'){
+        if(quoted&&text[i+1]==='"'){field+='"';i++;}else quoted=!quoted;
+      }else if(c===delimiter&&!quoted){row.push(field);field='';}
+      else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);if(row.some(x=>x.trim()))rows.push(row);row=[];field='';}
+      else field+=c;
+    }
+    row.push(field);if(row.some(x=>x.trim()))rows.push(row);
+    if(!rows.length)return [];
+    const head=rows[0].map(x=>x.toLowerCase().trim());
+    const ix=(names)=>head.findIndex(h=>names.includes(h));
+    const qIx=ix(['question','q','front','term']);
+    const aIx=ix(['answer','a','back','definition']);
+    const chIx=ix(['chapter','ch','deck','set']);
+    const header=qIx>=0&&aIx>=0;
+    return rows.slice(header?1:0).map(fields=>{
+      const threeColumns=!header && fields.length>=3 && (/^(chapter|ch\.?\s*\d|\d+)/i.test(fields[0]?.trim()||''));
+      const chapter=header?(chIx<0?fallbackChapter:fields[chIx]):threeColumns?fields[0]:fallbackChapter;
+      const question=header?fields[qIx]:fields[threeColumns?1:0];
+      const answer=header?fields[aIx]:fields[threeColumns?2:1];
+      return {chapter:String(chapter??fallbackChapter).trim(),question:String(question??'').trim(),answer:String(answer??'').trim()};
+    }).filter(x=>x.chapter&&x.question&&x.answer);
+  }
+  async function saveBulk(){
+    if(managerBusy||!editorAllowed)return;
+    const text=$('#cc-bulktext')?.value||'',fallbackChapter=$('#cc-bulkchapter')?.value.trim()||'Other shared cards';
+    managerBulkText=text;managerBulkChapter=fallbackChapter;
+    const cards=parseSharedImport(text,fallbackChapter);
+    if(!cards.length){managerInfo('No valid cards found. Use question TAB answer, or a CSV with chapter, question, answer headers.',true);return;}
+    if(cards.length>5000){managerInfo('Import at most 5,000 cards at once.',true);return;}
+    const known=new Set(cloudCards.map(c=>`${chapterTitle(c).toLowerCase()}|${c.q.trim().toLowerCase()}`));
+    const incoming=[];
+    for(const c of cards){const key=`${c.chapter.toLowerCase()}|${c.question.toLowerCase()}`;if(known.has(key))continue;known.add(key);incoming.push(c);}
+    if(!incoming.length){managerInfo('All these questions are already in the shared database. Nothing was added.');return;}
+    managerBusy=true;managerNotice='';managerError='';render();
+    let completed=0;
+    try{
+      for(let i=0;i<incoming.length;i+=100){
+        const chunk=incoming.slice(i,i+100);
+        const result=await authClient.from('flashcards').insert(chunk).select('id');
+        if(result.error)throw result.error;
+        completed+=result.data?.length||0;
+      }
+      await refreshCloudCards();managerBulkText='';
+      managerNotice=`Imported ${completed} flashcards to the shared website. ${cards.length-incoming.length} already existed. She can refresh Cindy Cards to see them.`;
+    }catch(err){managerError=`Imported ${completed} before an error: ${String(err?.message||err)}. Refresh before retrying to avoid duplicates.`;await refreshCloudCards();}
+    finally{managerBusy=false;render();}
+  }
+  async function deleteCard(id){
+    if(!editorAllowed||managerBusy)return;
+    const card=cloudCards.find(c=>c.id===id);if(!card)return;
+    if(!confirm(`Delete this shared card?\n\n${card.q}`))return;
+    managerBusy=true;
+    try{const result=await authClient.from('flashcards').delete().eq('id',String(id).replace(/^supabase-/,'')).select('id');
+      if(result.error)throw result.error;
+      if(!result.data?.length)throw new Error('Deletion was not permitted.');
+      if(editingCardId===id)editingCardId=null;
+      await refreshCloudCards();managerNotice='Card deleted from the online database.';managerError='';
+    }catch(err){managerError=String(err?.message||err);}finally{managerBusy=false;render();}
+  }
+
   function icon(c){return ({flash:'▣',learn:'✦',cram:'ϟ'})[c]||'•';}
   function renderHome(){
     const d=getDeck(), cards=d.cards, known=cards.filter(c=>pFor(c.id).known).length, mastered=cards.filter(c=>pFor(c.id).learned).length;
-    const sidebar = `<aside class="sidebar"><div class="brand"><span class="brand-mark">✚</span> Cindy Cards</div><div><div class="nav-label">STUDY DECKS</div><div class="deck-list">${decks().map(deck=>`<button data-key="deck-${escapeHTML(deck.id)}" data-action="deck" data-id="${escapeHTML(deck.id)}" class="deck-btn ${deck.id===state.deckId?'active':''}"><span class="deck-dot"></span>${escapeHTML(deck.name)}</button>`).join('')}</div></div><div class="sidebar-bottom"><button data-key="import-sidebar" class="outline-btn" data-action="import">＋ Import locally</button><div class="tiny-muted">Your study progress is saved only in this browser. Shared questions load from Supabase.</div></div></aside>`;
-    return `<div class="app-shell">${sidebar}<main class="content"><div class="topbar"><div class="mobile-header"><span class="brand-mark" style="width:30px;height:30px;font-size:19px">✚</span> Cindy Cards</div><div class="badge"><span class="status-dot"></span> Ready to study</div><div class="topbar-actions"><button data-key="cycle" data-action="cycle" class="mini-btn" title="Switch chapter/deck">${escapeHTML(d.short || d.name)} ▾</button><button data-key="view" data-action="view" class="mini-btn" title="Switch to or from glasses preview">${state.glasses?'PC view':'Glasses view'}</button></div></div>
+    const sidebar = `<aside class="sidebar"><div class="brand"><span class="brand-mark">✚</span> Cindy Cards</div><div><div class="nav-label">STUDY DECKS</div><div class="deck-list">${decks().map(deck=>`<button data-key="deck-${escapeHTML(deck.id)}" data-action="deck" data-id="${escapeHTML(deck.id)}" class="deck-btn ${deck.id===state.deckId?'active':''}"><span class="deck-dot"></span>${escapeHTML(deck.name)}</button>`).join('')}</div></div><div class="sidebar-bottom"><button class="outline-btn manager-only" data-key="manager-sidebar" data-action="manager">🔐 Manage shared cards</button><button data-key="import-sidebar" class="outline-btn" data-action="import">＋ Import locally</button><div class="tiny-muted">Your study progress is saved only in this browser. Shared questions load from Supabase.</div></div></aside>`;
+    return `<div class="app-shell">${sidebar}<main class="content"><div class="topbar"><div class="mobile-header"><span class="brand-mark" style="width:30px;height:30px;font-size:19px">✚</span> Cindy Cards</div><div class="badge"><span class="status-dot"></span> Ready to study</div><div class="topbar-actions"><button data-key="manager-top" data-action="manager" class="mini-btn manager-only">Manage</button><button data-key="cycle" data-action="cycle" class="mini-btn" title="Switch chapter/deck">${escapeHTML(d.short || d.name)} ▾</button><button data-key="view" data-action="view" class="mini-btn" title="Switch to or from glasses preview">${state.glasses?'PC view':'Glasses view'}</button></div></div>
       <div class="eyebrow">PHLEBOTOMY • STUDY SPACE</div><h1 class="headline">Learn it. <em>Remember it.</em></h1><p class="lede">${escapeHTML(d.name)} · ${cards.length} flashcards. Practice what matters and keep track of what sticks.</p>
       <div class="cloud-strip" role="status"><span class="cloud-indicator ${state.cloudStatus==='ready'?'connected':state.cloudStatus==='offline'?'error':''}"></span><span>${escapeHTML(syncLabel())}</span><button data-key="sync" data-action="sync" class="mini-btn" ${state.cloudStatus==='syncing'?'disabled':''}>↻ Refresh</button></div>
       <div class="stats"><div class="stat"><div class="stat-number">${cards.length}</div><div class="stat-caption">Total cards</div></div><div class="stat"><div class="stat-number">${known}</div><div class="stat-caption">Marked known</div></div><div class="stat"><div class="stat-number">${mastered}</div><div class="stat-caption">Learn mastered</div></div></div>
@@ -3246,7 +3495,7 @@ window.STARTER_CARDS = [
         <button data-key="mode-flash" class="mode-card flash" data-action="flash"><span class="mode-icon">${icon('flash')}</span><span class="mode-name">Flashcards</span><span class="mode-desc">Flip through questions and answers. Flag what you know and what needs another look.</span><span class="mode-cta">Start reviewing →</span></button>
         <button data-key="mode-learn" class="mode-card learn" data-action="learn"><span class="mode-icon">${icon('learn')}</span><span class="mode-name">Learn</span><span class="mode-desc">Practice with multiple choice. Get each answer right twice to master a card.</span><span class="mode-cta">Start learning →</span></button>
         <button data-key="mode-cram" class="mode-card cram" data-action="cram"><span class="mode-icon">${icon('cram')}</span><span class="mode-name">Cram</span><span class="mode-desc">Three-minute sprint. Answer fast and revisit the questions you miss.</span><span class="mode-cta">Start a sprint →</span></button>
-      </div><div class="note"><b>Study source:</b> ${safeCards.length} original practice cards based on your photographed textbook pages (Chapters 7–9), plus ${cloudCards.length} shared Supabase records (matching questions are merged). ${state.cloudStatus==='offline'?`<b>Sync error:</b> ${escapeHTML(state.cloudError)}. `:''}Review your course materials and local procedures for clinical requirements. <button data-key="export" data-action="export" class="export-link">Export selected deck for Quizlet ↗</button> <button data-key="import-mobile" data-action="import" class="danger-link" style="color:var(--mint)">Import a personal deck →</button></div></main></div>`;
+      </div><div class="note"><b>Study source:</b> ${safeCards.length} original practice cards based on your photographed textbook pages (Chapters 7–9), plus ${cloudCards.length} shared Supabase records (matching questions are merged). ${state.cloudStatus==='offline'?`<b>Sync error:</b> ${escapeHTML(state.cloudError)}. `:''}Review your course materials and local procedures for clinical requirements. <button data-key="export" data-action="export" class="export-link">Export selected deck for Quizlet ↗</button> <button data-key="import-mobile" data-action="import" class="danger-link" style="color:var(--mint)">Import a personal deck →</button> <button class="export-link manager-only" data-action="manager">Manage shared cards ↗</button></div></main></div>`;
   }
   function studyHeader(mode, value, max){const d=getDeck();return `<div class="study-top"><button data-action="home" class="back-btn">← Back to decks</button><span class="name">${escapeHTML(d.name)}</span><span class="mode-tag">${escapeHTML(mode)}</span></div><div class="progress-header"><span>${escapeHTML(value)}</span><span>${escapeHTML(max)}</span></div>`;}
   function renderFlash(){
@@ -3320,7 +3569,7 @@ window.STARTER_CARDS = [
   function renderImport(){return `<div class="modal-screen"><div class="modal-box"><button data-action="home" class="back-btn">← Back to decks</button><p class="eyebrow">ADD YOUR OWN MATERIAL</p><h1>Import flashcards</h1><p>Paste Quizlet export text (one card per line, with a tab between question and answer) or choose a TSV, TXT, or CSV file. This creates a <b>personal deck on this device only</b>. To share cards with your girlfriend's glasses, import a CSV into the <b>flashcards</b> table in Supabase and press Refresh on the Cindy Cards home screen.</p><label class="field-label" for="deckname">Deck name</label><input id="deckname" class="text-field" maxlength="80" placeholder="Chapter 7 textbook review" value="${escapeHTML(state.importName)}"><label class="field-label" for="deckfile">Upload study cards</label><input id="deckfile" class="text-field" type="file" accept=".tsv,.txt,.csv,.json,text/plain,text/tab-separated-values,text/csv,application/json"><label class="field-label" for="importtext">Or paste questions and answers</label><textarea id="importtext" class="text-field import-text" placeholder="What is EDTA?&#9;An additive that binds calcium.&#10;What is a CBC?&#9;Complete blood count.">${escapeHTML(state.importText)}</textarea><div class="modal-buttons"><button data-action="create-deck" class="action-btn primary">Import cards</button><button data-action="home" class="action-btn">Cancel</button></div><p class="import-status" id="importstatus">${escapeHTML(state.importNotice)}</p></div></div>`;}
   function render(preferred = focusKey(document.activeElement)){
     document.body.classList.toggle('glasses',state.glasses);const root=$('#app');
-    root.innerHTML=state.screen==='home'?renderHome():state.screen==='flash'?renderFlash():['learn','cram'].includes(state.screen)?renderQuiz():state.screen==='results'?renderResults():renderImport();
+    root.innerHTML=state.screen==='home'?renderHome():state.screen==='flash'?renderFlash():['learn','cram'].includes(state.screen)?renderQuiz():state.screen==='results'?renderResults():state.screen==='manager'?renderManager():renderImport();
     const controls = visibleControls();
     const fallback = state.screen==='home'?'mode-flash':state.screen==='flash'?'flip':'home';
     const target = controls.find(el => focusKey(el) === preferred)
@@ -3358,6 +3607,21 @@ window.STARTER_CARDS = [
   function downloadDeck(){const deck=getDeck();const body=deck.cards.map(c=>`${c.q.replace(/[\t\r\n]+/g,' ')}\t${c.a.replace(/[\t\r\n]+/g,' ')}`).join('\n');const file=new Blob([body],{type:'text/tab-separated-values;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=deck.name.replace(/[^\w-]+/g,'_')+'.tsv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
   function handleAction(action, el){
     switch(action){
+
+      case 'manager':state.screen='manager';managerNotice='';managerError='';render('manager-back');void ensureAuth().catch(()=>{});break;
+      case 'auth-retry':authStatus='idle';managerError='';if(authClient)void refreshAuth();else void ensureAuth().catch(()=>{});break;
+      case 'auth-mode':managerMode=el.dataset.mode||'login';managerNotice='';managerError='';render();break;
+      case 'check-editor':void refreshAuth();break;
+      case 'copy-uid':{const id=authUser?.id||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(id).then(()=>managerInfo('Account ID copied.')).catch(()=>managerInfo('Select and copy the account ID shown above.'));else managerInfo('Select and copy the account ID shown above.');break;}
+      case 'logout':void (async()=>{try{const r=await authClient.auth.signOut();if(r.error)throw r.error;authUser=null;editorAllowed=false;managerMode='login';managerInfo('Signed out.');}catch(err){managerInfo(String(err?.message||err),true);}})();break;
+      case 'sync-manager':void (async()=>{await refreshCloudCards();await refreshAuth();managerInfo(`Loaded ${cloudCards.length} cloud flashcards.`);})();break;
+      case 'cancel-edit':editingCardId=null;render();break;
+      case 'edit-card':editingCardId=el.dataset.id;managerNotice='';managerError='';render();window.scrollTo({top:0,behavior:'smooth'});break;
+      case 'delete-card':void deleteCard(el.dataset.id);break;
+      case 'filter-cards':managerFilter=$('#cc-find')?.value.trim()||'';managerPage=0;render('cc-find');break;
+      case 'manager-prev':managerPage=Math.max(0,managerPage-1);render();break;
+      case 'manager-next':managerPage++;render();break;
+      case 'bulk-save':void saveBulk();break;
       case 'home':goHome();break;
       case 'view':state.glasses=!state.glasses;render();break;
       case 'sync':refreshCloudCards();break;
@@ -3380,7 +3644,20 @@ window.STARTER_CARDS = [
     }
   }
   $('#app').addEventListener('click',(event)=>{const el=event.target.closest('[data-action]');if(el)handleAction(el.dataset.action,el);});
-  $('#app').addEventListener('change',async(event)=>{if(event.target.id==='deckfile'){const field=event.target;const file=field.files[0];if(!file)return;try{const contents=await file.text();if(!field.isConnected || field.files[0]!==file)return;state.importText=contents;$('#importtext').value=contents;$('#importstatus').textContent=`Loaded ${file.name}. Click Import cards to save.`;}catch{if(field.isConnected)$('#importstatus').textContent='Could not read this file.';}}});
+  $('#app').addEventListener('submit',(event)=>{
+    if(!['cc-authform','cc-cardform','cc-newpassform'].includes(event.target?.id))return;
+    event.preventDefault();
+    if(event.target.id==='cc-authform')void submitAuth();
+    else if(event.target.id==='cc-cardform')void saveCard();
+    else void submitNewPassword();
+  });
+  $('#app').addEventListener('change',async(event)=>{
+    if(event.target.id==='cc-bulkfile'){
+      const file=event.target.files?.[0];if(!file)return;
+      try{const contents=await file.text();const target=$('#cc-bulktext');if(target)target.value=contents;managerNotice=`Loaded ${file.name}. Click Import to shared cards to publish.`;managerError='';}
+      catch(err){managerInfo('Could not read the selected file.',true);}return;
+    }
+    if(event.target.id==='deckfile'){const field=event.target;const file=field.files[0];if(!file)return;try{const contents=await file.text();if(!field.isConnected || field.files[0]!==file)return;state.importText=contents;$('#importtext').value=contents;$('#importstatus').textContent=`Loaded ${file.name}. Click Import cards to save.`;}catch{if(field.isConnected)$('#importstatus').textContent='Could not read this file.';}}});
   let lastFocus;
 
   function focusKey(el){
@@ -3389,7 +3666,7 @@ window.STARTER_CARDS = [
   }
 
   function visibleControls(){
-    return Array.from(document.querySelectorAll('#app :is(button,input,textarea):enabled'))
+    return Array.from(document.querySelectorAll('#app :is(button,input,textarea,select):enabled'))
       .filter(el => el.getClientRects().length);
   }
 
@@ -3425,7 +3702,7 @@ window.STARTER_CARDS = [
   document.addEventListener('keydown', (event) => {
     const {key, target} = event;
     if(event.defaultPrevented || event.isComposing || event.altKey || event.ctrlKey || event.metaKey)return;
-    const inField = target.matches?.('input,textarea');
+    const inField = target.matches?.('input,textarea,select');
     if(key==='Escape' || key==='BrowserBack' || key==='GoBack' || key==='Back' || (key==='Backspace' && !inField)){
       if(state.screen==='home')return;
       event.preventDefault();
