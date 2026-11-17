@@ -1,0 +1,3312 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080d1a"><meta name="mrbd-web-app-capable" content="yes">
+  <meta name="description" content="Cindy Cards: textbook-based phlebotomy flashcards with Flashcards, Learn, and Cram modes for PC and Meta Ray-Ban Display.">
+  <title>Cindy Cards · Phlebotomy study</title><style>
+:root{color-scheme:dark;--bg:#080d1a;--surface:#111a2c;--surface2:#172238;--text:#f6f8ff;--muted:#a3b2c9;--line:#29354d;--mint:#62f0c7;--blue:#8cb8ff;--violet:#bd9bff;--red:#ff9ba5;--font:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;}
+*{box-sizing:border-box}html{height:100%;font-family:var(--font)}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 70% 35% at 80% 0%,#1a2848 0,transparent 85%),var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,textarea:focus-visible,[data-nav].dpad-focus{outline:3px solid var(--mint);outline-offset:3px}a{color:var(--mint)}.app-shell{display:flex;min-height:100dvh;max-width:1540px;margin:auto}.sidebar{width:260px;padding:30px 18px 22px 25px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:28px;background:rgba(8,14,28,.72);flex-shrink:0}.brand{display:flex;gap:12px;align-items:center;font-weight:800;font-size:1.2rem;letter-spacing:-.04em}.brand-mark{width:39px;height:39px;display:grid;place-items:center;color:var(--bg);background:linear-gradient(135deg,var(--mint),var(--blue));border-radius:13px;font-size:25px}.nav-label,.eyebrow{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:800}.deck-list{display:flex;flex-direction:column;gap:6px;margin-top:12px}.deck-btn{background:none;border:1px solid transparent;border-radius:12px;padding:11px 12px;text-align:left;display:flex;gap:10px;align-items:center;width:100%;color:var(--muted);font-weight:650;font-size:13px}.deck-btn:hover,.deck-btn.active{background:var(--surface2);color:var(--text);border-color:var(--line)}.deck-btn.active .deck-dot{background:var(--mint)}.deck-dot{height:9px;width:9px;background:var(--muted);border-radius:50%;flex-shrink:0}.sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:10px}.tiny-muted{color:var(--muted);font-size:12px;line-height:1.6}.content{flex:1;min-width:0;padding:30px clamp(20px,4vw,60px) 48px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:50px}.topbar-actions{display:flex;gap:9px;align-items:center}.mini-btn,.outline-btn{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:10px 14px;font-size:13px;font-weight:700}.mini-btn:hover,.outline-btn:hover{border-color:var(--blue);background:var(--surface2)}.badge{padding:7px 11px;border:1px solid #3b5174;background:#14243e;color:#bcdbff;border-radius:99px;font-size:12px;font-weight:700;display:inline-flex;gap:7px;align-items:center}.badge .status-dot{width:6px;height:6px;background:var(--mint);border-radius:50%}.headline{font-size:clamp(30px,4vw,50px);letter-spacing:-.06em;line-height:1.1;margin:14px 0 12px;font-weight:850;max-width:820px}.headline em{font-style:normal;color:var(--mint)}.lede{color:var(--muted);font-size:15px;max-width:670px;line-height:1.7;margin:0 0 27px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;max-width:820px;margin:0 0 40px}.stat{background:rgba(23,34,56,.77);border:1px solid var(--line);border-radius:16px;padding:18px 20px}.stat-number{font-size:28px;font-weight:850;letter-spacing:-.04em}.stat-caption{font-size:12px;color:var(--muted);margin-top:5px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 17px}.section-heading h2{font-size:19px;letter-spacing:-.02em;margin:0}.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.mode-card{background:linear-gradient(145deg,#1b2942 0%,#121c2e 75%);border:1px solid #34415b;border-radius:21px;min-height:242px;padding:22px;text-align:left;display:flex;flex-direction:column;transition:transform .15s,border-color .15s;position:relative;overflow:hidden}.mode-card:hover{transform:translateY(-3px);border-color:var(--mint)}.mode-card:before{content:'';position:absolute;right:-58px;top:-58px;width:145px;height:145px;border-radius:50%;background:radial-gradient(circle,rgba(98,240,199,.16),transparent 70%)}.mode-card.learn:before{background:radial-gradient(circle,rgba(189,155,255,.22),transparent 70%)}.mode-card.cram:before{background:radial-gradient(circle,rgba(255,155,165,.18),transparent 70%)}.mode-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:#214c4c;color:var(--mint);margin-bottom:24px}.learn .mode-icon{color:var(--violet);background:#352b57}.cram .mode-icon{color:var(--red);background:#563043}.mode-name{font-size:21px;font-weight:820;letter-spacing:-.025em}.mode-desc{font-size:13px;color:var(--muted);line-height:1.55;margin:9px 0 16px}.mode-cta{font-size:12px;font-weight:750;color:var(--mint);margin-top:auto}.learn .mode-cta{color:var(--violet)}.cram .mode-cta{color:var(--red)}.note{margin-top:28px;padding:15px 18px;border:1px solid var(--line);border-radius:13px;color:var(--muted);font-size:12px;line-height:1.6}.note b{color:var(--text)}.study-shell{max-width:890px;margin:0 auto}.study-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:22px}.study-top .name{font-size:15px;font-weight:800}.back-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 13px;font-size:13px;font-weight:700}.mode-tag{text-transform:uppercase;letter-spacing:.12em;color:var(--mint);font-size:11px;font-weight:850}.progress-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;color:var(--muted);font-size:13px;font-weight:700}.progress-track{height:7px;border-radius:12px;background:#263347;overflow:hidden;margin-bottom:24px}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--blue));border-radius:12px;transition:width .25s}.flashcard{display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;width:100%;min-height:390px;padding:50px 40px;background:linear-gradient(160deg,#1b2b46,#121e34);border:1px solid #455777;border-radius:24px;text-align:center;box-shadow:0 22px 50px #0004}.flashcard:hover{border-color:#7a91b1}.card-side{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:850;color:var(--mint);margin-bottom:32px}.card-text{font-size:clamp(23px,3.4vw,40px);font-weight:730;letter-spacing:-.026em;line-height:1.28;max-height:290px;overflow:auto;overscroll-behavior:contain}.card-hint{font-size:12px;color:var(--muted);margin-top:36px}.card-actions{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap}.action-group{display:flex;gap:9px;align-items:center}.action-btn{border-radius:12px;padding:13px 18px;border:1px solid var(--line);background:var(--surface2);font-size:13px;font-weight:760}.action-btn:hover{border-color:#92a7c9}.action-btn.primary{background:var(--mint);border-color:var(--mint);color:#092522}.action-btn.again{color:var(--red);border-color:#69414d}.action-btn.know{color:var(--mint);border-color:#3a766b}.key-help{margin-top:19px;text-align:center;color:var(--muted);font-size:12px;line-height:1.6}.question-box{border:1px solid #43536e;border-radius:21px;background:linear-gradient(155deg,#1b2943,#111b2f);padding:27px;min-height:175px;margin-bottom:17px}.question-label{text-transform:uppercase;letter-spacing:.13em;font-size:11px;color:var(--mint);font-weight:850;margin:0 0 14px}.question-text{font-size:clamp(21px,2.6vw,30px);font-weight:730;letter-spacing:-.02em;line-height:1.32}.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}.option{border:1px solid #34435e;background:#18243a;color:var(--text);border-radius:15px;text-align:left;min-height:97px;padding:17px;display:flex;gap:12px;align-items:center;font-size:14px;line-height:1.45;font-weight:650}.option .letter{width:28px;height:28px;border-radius:9px;background:#2c3c5b;color:var(--blue);display:grid;place-items:center;flex-shrink:0;font-size:12px;font-weight:900}.option.chosen{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue);background:#233752}.option.correct{border-color:var(--mint);background:#17433c}.option.wrong{border-color:var(--red);background:#472b3a}.option:disabled{cursor:default;opacity:1}.feedback{margin:16px 0 0;border-radius:13px;padding:16px 18px;background:#1e3042;border:1px solid #426276;color:#cce5f4;font-size:14px;line-height:1.55}.feedback strong{color:var(--mint)}.feedback.bad strong{color:var(--red)}.study-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px}.summary{background:#15223a;border:1px solid #3a4f72;border-radius:24px;padding:36px;text-align:center;margin-top:25px}.summary-emoji{font-size:46px}.summary h2{font-size:33px;letter-spacing:-.04em;margin:14px 0 8px}.summary p{color:var(--muted);line-height:1.6}.summary-grid{display:flex;justify-content:center;gap:25px;margin:24px 0}.summary-grid b{display:block;font-size:30px;color:var(--mint)}.summary-grid span{color:var(--muted);font-size:12px}.subtle{color:var(--muted)}.modal-screen{min-height:100dvh;display:flex;justify-content:center;align-items:center;padding:28px}.modal-box{width:min(720px,100%);border:1px solid #394b69;background:#121d30;border-radius:25px;padding:30px}.modal-box h1{margin:10px 0 8px;font-size:30px;letter-spacing:-.04em}.modal-box p{color:var(--muted);font-size:14px;line-height:1.6}.field-label{display:block;font-size:13px;font-weight:750;margin:19px 0 8px}.text-field{width:100%;background:#0e1728;border:1px solid #42516d;border-radius:11px;padding:12px;color:var(--text);outline:none}.import-text{height:165px;resize:vertical;line-height:1.5;font-family:ui-monospace,Consolas,monospace;font-size:12px}.modal-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}.import-status{font-size:13px;color:var(--mint);margin-top:12px}.danger-link{color:var(--red);font-size:12px;background:none;border:0;padding:8px 0}.mobile-header{display:none}.timer{font-variant-numeric:tabular-nums;font-weight:900;font-size:18px;color:var(--red)}.result-chip{color:var(--muted);font-size:12px}.check{color:var(--mint)}
+/* The user can switch the same site into a high-contrast 600px glasses-first layout. */
+body.glasses{background:#000;overflow-x:hidden}body.glasses .app-shell{max-width:600px;display:block;min-height:100dvh;padding:0}body.glasses .sidebar,body.glasses .mobile-header{display:none}body.glasses .content{padding:15px 19px 20px}body.glasses .topbar{margin-bottom:17px}body.glasses .topbar-actions{gap:5px}body.glasses .topbar .mini-btn{font-size:11px;padding:8px 9px}body.glasses .headline{font-size:28px;margin:10px 0 8px}body.glasses .lede{font-size:12px;line-height:1.4;margin-bottom:12px}body.glasses .stats{margin-bottom:14px;gap:7px}body.glasses .stat{padding:10px;border-radius:10px}body.glasses .stat-number{font-size:20px}body.glasses .stat-caption{font-size:10px}body.glasses .section-heading{margin-bottom:10px}body.glasses .section-heading h2{font-size:14px}body.glasses .modes{grid-template-columns:1fr;gap:8px}body.glasses .mode-card{padding:10px 13px;min-height:78px;border-radius:13px;display:grid;grid-template-columns:34px 1fr;column-gap:10px;align-content:center}body.glasses .mode-icon{grid-row:span 3;margin:0;width:34px;height:34px;font-size:18px}body.glasses .mode-name{font-size:16px}body.glasses .mode-desc{font-size:10px;margin:2px 0}body.glasses .mode-cta{display:none}body.glasses .note{margin-top:12px;font-size:10px;padding:10px}body.glasses .study-top{margin-bottom:12px}body.glasses .study-top .name{font-size:12px}body.glasses .back-btn{padding:8px 10px;font-size:11px}body.glasses .progress-header{font-size:11px;margin-bottom:7px}body.glasses .progress-track{height:5px;margin-bottom:13px}body.glasses .flashcard{min-height:min(54dvh,315px);padding:18px 20px;background:#0b182b;border-color:#42688f;border-radius:16px}body.glasses .card-side{font-size:11px;margin-bottom:18px}body.glasses .card-text{font-size:clamp(19px,4.7vw,29px);max-height:47dvh}body.glasses .card-hint{font-size:10px;margin-top:18px}body.glasses .card-actions{gap:7px;margin-top:10px}body.glasses .action-group{gap:7px}body.glasses .action-btn{padding:10px 12px;font-size:12px}body.glasses .key-help{font-size:11px;margin-top:11px;color:#d3e1f8}body.glasses .question-box{min-height:120px;padding:16px;margin-bottom:10px;border-radius:15px;background:#081729}body.glasses .question-label{font-size:10px;margin-bottom:9px}body.glasses .question-text{font-size:clamp(16px,3.9vw,24px)}body.glasses .answers{gap:8px}body.glasses .option{min-height:75px;padding:11px;border-radius:12px;font-size:clamp(11px,2.3vw,15px);gap:7px;background:#102039}body.glasses .option .letter{width:24px;height:24px;border-radius:7px}body.glasses .feedback{padding:10px;margin-top:10px;font-size:12px}body.glasses .study-footer{margin-top:11px}body.glasses .summary{padding:20px;margin-top:15px}body.glasses .summary h2{font-size:24px}body.glasses .summary-grid b{font-size:23px}body.glasses .modal-screen{padding:10px}body.glasses .modal-box{padding:17px}body.glasses .modal-box h1{font-size:22px}body.glasses .field-label{margin:9px 0 5px}
+@media(max-width:1000px){.sidebar{width:210px;padding:22px 12px}.content{padding:25px}.modes{gap:11px}.mode-card{padding:17px}}
+@media(max-width:780px){.app-shell{display:block}.sidebar{display:none}.mobile-header{display:flex;gap:8px;align-items:center;font-weight:800;font-size:16px}.topbar{margin-bottom:25px}.content{padding:20px}.modes{grid-template-columns:1fr}.mode-card{min-height:145px}.mode-icon{margin-bottom:10px}.stats{margin-bottom:25px}.flashcard{min-height:360px}.answers{grid-template-columns:1fr}.option{min-height:66px}}@media(max-width:420px){.headline{font-size:32px}.stat{padding:12px}.stat-number{font-size:22px}.stat-caption{font-size:11px}.content{padding:17px}.question-box{padding:20px}.flashcard{padding:30px 20px}.card-actions{justify-content:center}.study-top .name{max-width:145px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.topbar .badge{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+/* Keep all on-glasses quiz controls inside the square display, including feedback. */
+body.glasses .study-shell:has(.answers) .study-top{margin-bottom:7px}
+body.glasses .study-shell:has(.answers) .progress-track{margin-bottom:9px}
+body.glasses .study-shell:has(.answers) .question-box{min-height:84px;padding:11px 14px;margin-bottom:8px}
+body.glasses .study-shell:has(.answers) .question-label{font-size:9px;margin:0 0 5px}
+body.glasses .study-shell:has(.answers) .question-text{font-size:clamp(16px,3vw,18px);line-height:1.2}
+body.glasses .study-shell:has(.answers) .answers{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+body.glasses .study-shell:has(.answers) .option{min-height:103px;padding:9px;font-size:11.5px;line-height:1.32;gap:6px;align-items:flex-start}
+body.glasses .study-shell:has(.answers) .option .letter{width:21px;height:21px;font-size:11px}
+body.glasses .study-shell:has(.answers) .feedback{margin-top:7px;padding:8px 10px;font-size:11px;line-height:1.35;max-height:64px;overflow-y:auto}
+body.glasses .study-shell:has(.answers) .study-footer{margin-top:8px}
+body.glasses .study-shell:has(.answers) .key-help{display:none}
+body.glasses .study-shell:has(.answers) .study-footer .action-btn{padding:9px 12px;font-size:11px}
+body.glasses .note{display:none}
+
+/* Cindy Cards: improved readability for longer textbook answers on the glasses. */
+body.glasses .study-shell:has(.answers) .answers{grid-template-columns:minmax(0,1fr);gap:5px}
+body.glasses .study-shell:has(.answers) .option{min-height:0;max-height:77px;padding:8px 11px;font-size:12.1px;line-height:1.26;overflow-y:auto;align-items:center}
+body.glasses .study-shell:has(.answers) .question-box{min-height:76px;max-height:105px;overflow-y:auto}
+body.glasses .study-shell:has(.answers) .feedback{max-height:59px}
+body.glasses .study-shell:has(.answers) .study-top{margin-bottom:5px}
+body.glasses .study-shell:has(.answers) .study-footer{margin-top:5px}
+body.glasses .card-text{font-size:clamp(18px,4.3vw,27px)}
+body.glasses .source-ref{font-size:10px}
+.source-ref{font-size:11px;color:var(--muted);margin:0 0 10px;letter-spacing:.015em;text-align:center}
+.export-link{border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;color:var(--mint);cursor:pointer;font-size:12px;padding:8px 2px}
+body.glasses .export-link{font-size:11px}
+
+</style>
+</head><body><div id="app" aria-live="polite"></div><script>
+/* Original study cards derived from the user-provided photographs of Phlebotomy Essentials, 8th ed., Chapters 7–9. */
+window.STARTER_CARDS = [
+  {
+    "id": "cc-7-001",
+    "ch": 7,
+    "page": 218,
+    "topic": "overview",
+    "q": "What is the phlebotomist's primary responsibility?",
+    "a": "Collect high-quality blood specimens safely for laboratory testing."
+  },
+  {
+    "id": "cc-7-002",
+    "ch": 7,
+    "page": 219,
+    "topic": "equipment",
+    "q": "What is a blood-drawing station?",
+    "a": "A dedicated area with supplies, patient seating, and a work surface for collection."
+  },
+  {
+    "id": "cc-7-003",
+    "ch": 7,
+    "page": 219,
+    "topic": "equipment",
+    "q": "What feature must a suitable phlebotomy chair have?",
+    "a": "Stable seating and arm support to reduce injury if a patient faints."
+  },
+  {
+    "id": "cc-7-004",
+    "ch": 7,
+    "page": 220,
+    "topic": "equipment",
+    "q": "When are handheld carriers especially convenient?",
+    "a": "For STAT, emergency, or small numbers of collections."
+  },
+  {
+    "id": "cc-7-005",
+    "ch": 7,
+    "page": 220,
+    "topic": "equipment",
+    "q": "When are phlebotomy carts especially useful?",
+    "a": "For rounds involving many patients and supplies."
+  },
+  {
+    "id": "cc-7-006",
+    "ch": 7,
+    "page": 221,
+    "topic": "infection control",
+    "q": "When must phlebotomists wear gloves?",
+    "a": "For every patient blood collection procedure."
+  },
+  {
+    "id": "cc-7-007",
+    "ch": 7,
+    "page": 221,
+    "topic": "infection control",
+    "q": "What must be done immediately after removing gloves?",
+    "a": "Decontaminate hands with proper hand hygiene."
+  },
+  {
+    "id": "cc-7-008",
+    "ch": 7,
+    "page": 221,
+    "topic": "infection control",
+    "q": "Why are latex gloves generally avoided?",
+    "a": "Latex allergies and sensitivity reactions."
+  },
+  {
+    "id": "cc-7-009",
+    "ch": 7,
+    "page": 221,
+    "topic": "infection control",
+    "q": "Do visibly clean gloves replace hand hygiene?",
+    "a": "No. Hands must still be cleaned after gloves are removed."
+  },
+  {
+    "id": "cc-7-010",
+    "ch": 7,
+    "page": 221,
+    "topic": "infection control",
+    "q": "What is an antiseptic?",
+    "a": "A substance applied to living tissue to inhibit microorganisms."
+  },
+  {
+    "id": "cc-7-011",
+    "ch": 7,
+    "page": 222,
+    "topic": "infection control",
+    "q": "Which antiseptic is commonly used for routine venipuncture?",
+    "a": "70% isopropyl alcohol."
+  },
+  {
+    "id": "cc-7-012",
+    "ch": 7,
+    "page": 222,
+    "topic": "infection control",
+    "q": "What is the difference between an antiseptic and a disinfectant?",
+    "a": "Antiseptics are for living tissue; disinfectants are for objects and surfaces."
+  },
+  {
+    "id": "cc-7-013",
+    "ch": 7,
+    "page": 222,
+    "topic": "infection control",
+    "q": "Does antiseptic cleaning sterilize the puncture site?",
+    "a": "No. It reduces microbes but does not sterilize the skin."
+  },
+  {
+    "id": "cc-7-014",
+    "ch": 7,
+    "page": 222,
+    "topic": "infection control",
+    "q": "When is alcohol-based hand sanitizer appropriate?",
+    "a": "When hands are not visibly soiled, according to facility policy."
+  },
+  {
+    "id": "cc-7-015",
+    "ch": 7,
+    "page": 223,
+    "topic": "aftercare",
+    "q": "Why is gauze preferred over cotton balls for puncture pressure?",
+    "a": "Cotton fibers can stick to the site and disturb the platelet plug."
+  },
+  {
+    "id": "cc-7-016",
+    "ch": 7,
+    "page": 223,
+    "topic": "aftercare",
+    "q": "When may an adhesive bandage be applied?",
+    "a": "After the collection site has stopped bleeding."
+  },
+  {
+    "id": "cc-7-017",
+    "ch": 7,
+    "page": 223,
+    "topic": "safety",
+    "q": "Where must used needles and lancets go immediately?",
+    "a": "Into an approved sharps container."
+  },
+  {
+    "id": "cc-7-018",
+    "ch": 7,
+    "page": 223,
+    "topic": "safety",
+    "q": "Why must sharps containers not be overfilled?",
+    "a": "Overfilling raises the risk of needlestick injuries."
+  },
+  {
+    "id": "cc-7-019",
+    "ch": 7,
+    "page": 224,
+    "topic": "records",
+    "q": "Why should a phlebotomist carry a permanent pen?",
+    "a": "To label tubes and record information clearly."
+  },
+  {
+    "id": "cc-7-020",
+    "ch": 7,
+    "page": 224,
+    "topic": "records",
+    "q": "Why is a watch or second-hand timer helpful?",
+    "a": "For accurate timed tests and recording collection times."
+  },
+  {
+    "id": "cc-7-021",
+    "ch": 7,
+    "page": 224,
+    "topic": "equipment",
+    "q": "What is a vein-locating device used for?",
+    "a": "Highlighting veins that are difficult to see or palpate."
+  },
+  {
+    "id": "cc-7-022",
+    "ch": 7,
+    "page": 225,
+    "topic": "tourniquet",
+    "q": "What does a properly applied tourniquet do?",
+    "a": "Restricts venous return so veins become easier to locate."
+  },
+  {
+    "id": "cc-7-023",
+    "ch": 7,
+    "page": 225,
+    "topic": "tourniquet",
+    "q": "What is the maximum recommended tourniquet application time?",
+    "a": "No longer than 1 minute without release."
+  },
+  {
+    "id": "cc-7-024",
+    "ch": 7,
+    "page": 225,
+    "topic": "tourniquet",
+    "q": "Why should nonlatex tourniquets be used?",
+    "a": "To reduce reactions in patients with latex sensitivities."
+  },
+  {
+    "id": "cc-7-025",
+    "ch": 7,
+    "page": 226,
+    "topic": "needles",
+    "q": "Are phlebotomy needles reusable?",
+    "a": "No. They are sterile, disposable, single-use devices."
+  },
+  {
+    "id": "cc-7-026",
+    "ch": 7,
+    "page": 226,
+    "topic": "needles",
+    "q": "What is a needle bevel?",
+    "a": "The angled cut at the point that helps the needle enter tissue."
+  },
+  {
+    "id": "cc-7-027",
+    "ch": 7,
+    "page": 226,
+    "topic": "needles",
+    "q": "What happens to needle diameter as gauge number increases?",
+    "a": "The needle diameter decreases."
+  },
+  {
+    "id": "cc-7-028",
+    "ch": 7,
+    "page": 227,
+    "topic": "needles",
+    "q": "Which needle gauge is standard for routine adult antecubital venipuncture?",
+    "a": "21 gauge."
+  },
+  {
+    "id": "cc-7-029",
+    "ch": 7,
+    "page": 227,
+    "topic": "needles",
+    "q": "Which needle gauge is commonly chosen for smaller veins?",
+    "a": "22 gauge, depending on patient and collection method."
+  },
+  {
+    "id": "cc-7-030",
+    "ch": 7,
+    "page": 227,
+    "topic": "needles",
+    "q": "What is a risk of using a needle that is too small?",
+    "a": "Specimen hemolysis."
+  },
+  {
+    "id": "cc-7-031",
+    "ch": 7,
+    "page": 227,
+    "topic": "needles",
+    "q": "What is a risk of using a needle that is too large?",
+    "a": "Unnecessary vein damage."
+  },
+  {
+    "id": "cc-7-032",
+    "ch": 7,
+    "page": 228,
+    "topic": "safety",
+    "q": "What should a needle safety feature do after use?",
+    "a": "Create a permanent barrier against the contaminated needle."
+  },
+  {
+    "id": "cc-7-033",
+    "ch": 7,
+    "page": 228,
+    "topic": "safety",
+    "q": "Can a device without a needle safety feature be used unprotected?",
+    "a": "No. Compatible equipment must provide required sharps protection."
+  },
+  {
+    "id": "cc-7-034",
+    "ch": 7,
+    "page": 228,
+    "topic": "ETS",
+    "q": "What does ETS stand for?",
+    "a": "Evacuated tube system."
+  },
+  {
+    "id": "cc-7-035",
+    "ch": 7,
+    "page": 228,
+    "topic": "ETS",
+    "q": "What are the three basic ETS components?",
+    "a": "Multisample needle, tube holder, and evacuated tube."
+  },
+  {
+    "id": "cc-7-036",
+    "ch": 7,
+    "page": 229,
+    "topic": "ETS",
+    "q": "Why can an ETS collect multiple tubes from one venipuncture?",
+    "a": "Its multisample needle allows successive vacuum tubes to be attached."
+  },
+  {
+    "id": "cc-7-037",
+    "ch": 7,
+    "page": 230,
+    "topic": "ETS",
+    "q": "Why should ETS components generally come from the same manufacturer?",
+    "a": "Mixed components can fit poorly and create sharps or tube-release hazards."
+  },
+  {
+    "id": "cc-7-038",
+    "ch": 7,
+    "page": 230,
+    "topic": "ETS",
+    "q": "Should a needle be removed from its holder for reuse?",
+    "a": "No. Dispose of the attached unit as directed by safety rules."
+  },
+  {
+    "id": "cc-7-039",
+    "ch": 7,
+    "page": 231,
+    "topic": "ETS",
+    "q": "What is an evacuated tube?",
+    "a": "A tube with negative pressure that automatically draws blood."
+  },
+  {
+    "id": "cc-7-040",
+    "ch": 7,
+    "page": 232,
+    "topic": "ETS",
+    "q": "What makes an evacuated tube fill automatically?",
+    "a": "The vacuum or negative pressure inside it."
+  },
+  {
+    "id": "cc-7-041",
+    "ch": 7,
+    "page": 232,
+    "topic": "ETS",
+    "q": "What may cause an evacuated tube to underfill?",
+    "a": "Loss of vacuum, poor positioning, or stopping the draw too early."
+  },
+  {
+    "id": "cc-7-042",
+    "ch": 7,
+    "page": 232,
+    "topic": "ETS",
+    "q": "Can a correctly filled tube have an air space above the blood?",
+    "a": "Yes. Headspace is normal and does not necessarily mean underfilling."
+  },
+  {
+    "id": "cc-7-043",
+    "ch": 7,
+    "page": 233,
+    "topic": "additives",
+    "q": "What is a blood tube additive?",
+    "a": "A substance that preserves or changes the specimen for a particular test."
+  },
+  {
+    "id": "cc-7-044",
+    "ch": 7,
+    "page": 233,
+    "topic": "additives",
+    "q": "Why must additive tubes fill to their specified volume?",
+    "a": "To maintain the correct blood-to-additive ratio."
+  },
+  {
+    "id": "cc-7-045",
+    "ch": 7,
+    "page": 233,
+    "topic": "additives",
+    "q": "What is meant by inverting a specimen tube?",
+    "a": "Gently turning it upside down and back to mix its contents."
+  },
+  {
+    "id": "cc-7-046",
+    "ch": 7,
+    "page": 233,
+    "topic": "additives",
+    "q": "Why should additive tubes be mixed promptly?",
+    "a": "To distribute additive and prevent clotting or inaccurate results."
+  },
+  {
+    "id": "cc-7-047",
+    "ch": 7,
+    "page": 234,
+    "topic": "labels",
+    "q": "What should be checked on a collection tube before use?",
+    "a": "Its expiration date, condition, and required type."
+  },
+  {
+    "id": "cc-7-048",
+    "ch": 7,
+    "page": 234,
+    "topic": "syringe",
+    "q": "When is a syringe system sometimes chosen instead of ETS?",
+    "a": "For fragile, small, or difficult veins."
+  },
+  {
+    "id": "cc-7-049",
+    "ch": 7,
+    "page": 234,
+    "topic": "syringe",
+    "q": "What keeps a syringe needle attached securely?",
+    "a": "A compatible Luer-lock connection."
+  },
+  {
+    "id": "cc-7-050",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What additive is in a light-blue-top tube?",
+    "a": "Sodium citrate."
+  },
+  {
+    "id": "cc-7-051",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "Which department commonly uses light-blue-top tubes?",
+    "a": "Coagulation."
+  },
+  {
+    "id": "cc-7-052",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What is the purpose of a gold-top SST?",
+    "a": "Collect serum using a clot activator and gel separator."
+  },
+  {
+    "id": "cc-7-053",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What additive is commonly in a lavender-top tube?",
+    "a": "EDTA."
+  },
+  {
+    "id": "cc-7-054",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What specimen type is commonly collected in a lavender tube?",
+    "a": "Whole blood for hematology tests."
+  },
+  {
+    "id": "cc-7-055",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What additive is commonly found in green-top tubes?",
+    "a": "Heparin, usually lithium or sodium heparin."
+  },
+  {
+    "id": "cc-7-056",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What additives are commonly found in gray-top tubes?",
+    "a": "Sodium fluoride with an anticoagulant, often potassium oxalate or EDTA."
+  },
+  {
+    "id": "cc-7-057",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What do royal-blue-top tubes indicate?",
+    "a": "Trace-element-free collection materials; check the label for additive."
+  },
+  {
+    "id": "cc-7-058",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What is the usual additive in a yellow-top blood culture tube?",
+    "a": "Sodium polyanethol sulfonate (SPS)."
+  },
+  {
+    "id": "cc-7-059",
+    "ch": 7,
+    "page": 235,
+    "topic": "tube colors",
+    "q": "What is the usual use of pink-top EDTA tubes?",
+    "a": "Blood bank testing."
+  },
+  {
+    "id": "cc-7-060",
+    "ch": 7,
+    "page": 236,
+    "topic": "syringe",
+    "q": "Why should syringe blood be transferred using a transfer device?",
+    "a": "To avoid needle handling, aerosol generation, and needlesticks."
+  },
+  {
+    "id": "cc-7-061",
+    "ch": 7,
+    "page": 237,
+    "topic": "syringe",
+    "q": "Why should the syringe plunger not be pushed to force blood into an ETS tube?",
+    "a": "Excess pressure can cause hemolysis or dislodge the stopper."
+  },
+  {
+    "id": "cc-7-062",
+    "ch": 7,
+    "page": 237,
+    "topic": "butterfly",
+    "q": "When are winged blood collection sets particularly useful?",
+    "a": "For small, difficult, or hand veins."
+  },
+  {
+    "id": "cc-7-063",
+    "ch": 7,
+    "page": 237,
+    "topic": "butterfly",
+    "q": "What problem can a needle smaller than 23 gauge cause?",
+    "a": "A higher risk of hemolysis unless specially designed for safe collection."
+  },
+  {
+    "id": "cc-7-064",
+    "ch": 7,
+    "page": 238,
+    "topic": "butterfly",
+    "q": "Why might the first tube with a butterfly set be a discard tube?",
+    "a": "To clear air from tubing before a required additive ratio is measured."
+  },
+  {
+    "id": "cc-7-065",
+    "ch": 7,
+    "page": 238,
+    "topic": "butterfly",
+    "q": "When a coagulation tube is first with butterfly tubing, what is commonly needed?",
+    "a": "A discard tube to remove tubing air before filling the light-blue tube."
+  },
+  {
+    "id": "cc-7-066",
+    "ch": 7,
+    "page": 239,
+    "topic": "additives",
+    "q": "Can additives from different tubes be mixed or substituted?",
+    "a": "No. Tubes must match the ordered test."
+  },
+  {
+    "id": "cc-7-067",
+    "ch": 7,
+    "page": 240,
+    "topic": "additives",
+    "q": "Why are specimen tubes gently inverted instead of shaken?",
+    "a": "Shaking can damage blood cells and cause hemolysis."
+  },
+  {
+    "id": "cc-7-068",
+    "ch": 7,
+    "page": 240,
+    "topic": "additives",
+    "q": "What are anticoagulants designed to prevent?",
+    "a": "Blood clot formation."
+  },
+  {
+    "id": "cc-7-069",
+    "ch": 7,
+    "page": 241,
+    "topic": "EDTA",
+    "q": "How does EDTA prevent clotting?",
+    "a": "It binds calcium required for the coagulation process."
+  },
+  {
+    "id": "cc-7-070",
+    "ch": 7,
+    "page": 241,
+    "topic": "EDTA",
+    "q": "What can excess EDTA from an underfilled tube cause?",
+    "a": "Cell shrinkage and inaccurate hematology results."
+  },
+  {
+    "id": "cc-7-071",
+    "ch": 7,
+    "page": 241,
+    "topic": "EDTA",
+    "q": "Why must an EDTA sample be mixed right after collection?",
+    "a": "To prevent platelet clumping and microclot formation."
+  },
+  {
+    "id": "cc-7-072",
+    "ch": 7,
+    "page": 242,
+    "topic": "citrate",
+    "q": "Which tube is used for most PT and aPTT tests?",
+    "a": "A properly filled light-blue sodium citrate tube."
+  },
+  {
+    "id": "cc-7-073",
+    "ch": 7,
+    "page": 242,
+    "topic": "citrate",
+    "q": "What is the required blood-to-citrate ratio?",
+    "a": "9 parts blood to 1 part anticoagulant."
+  },
+  {
+    "id": "cc-7-074",
+    "ch": 7,
+    "page": 242,
+    "topic": "citrate",
+    "q": "How many gentle inversions are listed for sodium citrate tubes in this chapter?",
+    "a": "3–4 inversions, with the manufacturer's guidance taking precedence."
+  },
+  {
+    "id": "cc-7-075",
+    "ch": 7,
+    "page": 242,
+    "topic": "heparin",
+    "q": "How does heparin prevent clotting?",
+    "a": "By inhibiting thrombin and related clotting activity."
+  },
+  {
+    "id": "cc-7-076",
+    "ch": 7,
+    "page": 243,
+    "topic": "heparin",
+    "q": "Why is lithium-heparin plasma unsuitable for a lithium level?",
+    "a": "The additive could falsely elevate the lithium result."
+  },
+  {
+    "id": "cc-7-077",
+    "ch": 7,
+    "page": 243,
+    "topic": "oxalate",
+    "q": "How does potassium oxalate prevent clotting?",
+    "a": "It precipitates calcium as an insoluble salt."
+  },
+  {
+    "id": "cc-7-078",
+    "ch": 7,
+    "page": 243,
+    "topic": "ACD",
+    "q": "What does ACD stand for in a yellow-top specialty tube?",
+    "a": "Acid citrate dextrose."
+  },
+  {
+    "id": "cc-7-079",
+    "ch": 7,
+    "page": 243,
+    "topic": "SPS",
+    "q": "Besides preventing clotting, why is SPS useful for blood cultures?",
+    "a": "It helps preserve organism recovery by reducing certain blood defenses."
+  },
+  {
+    "id": "cc-7-080",
+    "ch": 7,
+    "page": 244,
+    "topic": "fluoride",
+    "q": "What is the purpose of sodium fluoride in gray tubes?",
+    "a": "To inhibit glycolysis and preserve glucose levels."
+  },
+  {
+    "id": "cc-7-081",
+    "ch": 7,
+    "page": 244,
+    "topic": "fluoride",
+    "q": "Does sodium fluoride prevent clotting on its own?",
+    "a": "No. Another anticoagulant is often added for plasma samples."
+  },
+  {
+    "id": "cc-7-082",
+    "ch": 7,
+    "page": 244,
+    "topic": "clot activator",
+    "q": "What does a clot activator do?",
+    "a": "Speeds clot formation in tubes intended to yield serum."
+  },
+  {
+    "id": "cc-7-083",
+    "ch": 7,
+    "page": 244,
+    "topic": "clot activator",
+    "q": "What is an RST?",
+    "a": "A rapid serum tube containing a thrombin-based clot activator."
+  },
+  {
+    "id": "cc-7-084",
+    "ch": 7,
+    "page": 244,
+    "topic": "separator",
+    "q": "What is the purpose of serum or plasma separator material?",
+    "a": "To form a barrier between blood cells and the liquid portion after centrifuging."
+  },
+  {
+    "id": "cc-7-085",
+    "ch": 7,
+    "page": 245,
+    "topic": "separator",
+    "q": "What is thixotropic gel?",
+    "a": "A gel that moves during centrifugation to separate cells from serum or plasma."
+  },
+  {
+    "id": "cc-7-086",
+    "ch": 7,
+    "page": 245,
+    "topic": "trace elements",
+    "q": "Why are trace-element-free tubes used?",
+    "a": "To minimize contamination when measuring tiny amounts of elements."
+  },
+  {
+    "id": "cc-7-087",
+    "ch": 7,
+    "page": 245,
+    "topic": "order of draw",
+    "q": "What is meant by the order of draw?",
+    "a": "The sequence in which blood collection tubes are filled."
+  },
+  {
+    "id": "cc-7-088",
+    "ch": 7,
+    "page": 245,
+    "topic": "order of draw",
+    "q": "Why is the order of draw important?",
+    "a": "It reduces carryover of additives and specimen contamination."
+  },
+  {
+    "id": "cc-7-089",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "Which specimen is collected first in the CLSI order of draw?",
+    "a": "Blood culture bottles or sterile collection tubes."
+  },
+  {
+    "id": "cc-7-090",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "What tube category follows blood cultures?",
+    "a": "Light-blue sodium citrate tubes."
+  },
+  {
+    "id": "cc-7-091",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "What tube category follows citrate tubes?",
+    "a": "Serum tubes, including red and gold SST tubes."
+  },
+  {
+    "id": "cc-7-092",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "What follows serum tubes in the usual order of draw?",
+    "a": "Heparin tubes, usually green or light green."
+  },
+  {
+    "id": "cc-7-093",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "What follows heparin tubes in the usual order of draw?",
+    "a": "EDTA tubes, usually lavender or pink."
+  },
+  {
+    "id": "cc-7-094",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "Which tube category is usually collected last?",
+    "a": "Gray oxalate/fluoride tubes."
+  },
+  {
+    "id": "cc-7-095",
+    "ch": 7,
+    "page": 246,
+    "topic": "order of draw",
+    "q": "Recite the standard order of draw in six groups.",
+    "a": "Cultures → citrate → serum → heparin → EDTA → gray fluoride/oxalate."
+  },
+  {
+    "id": "cc-7-096",
+    "ch": 7,
+    "page": 247,
+    "topic": "contamination",
+    "q": "What is additive carryover?",
+    "a": "Movement of tube additive into a subsequent blood specimen."
+  },
+  {
+    "id": "cc-7-097",
+    "ch": 7,
+    "page": 247,
+    "topic": "contamination",
+    "q": "What false result can EDTA carryover cause?",
+    "a": "Falsely high potassium and low calcium."
+  },
+  {
+    "id": "cc-7-098",
+    "ch": 7,
+    "page": 247,
+    "topic": "contamination",
+    "q": "What should you do after accidentally filling an incorrect additive tube first?",
+    "a": "Follow facility policy; use a discard tube before resuming the correct order."
+  },
+  {
+    "id": "cc-7-099",
+    "ch": 7,
+    "page": 247,
+    "topic": "contamination",
+    "q": "Why can tissue thromboplastin interfere with some coagulation tests?",
+    "a": "It activates the clotting pathway after tissue contamination."
+  },
+  {
+    "id": "cc-7-100",
+    "ch": 7,
+    "page": 248,
+    "topic": "contamination",
+    "q": "What special contamination issue is critical when collecting blood cultures?",
+    "a": "Skin or handling microorganisms can create false-positive cultures."
+  },
+  {
+    "id": "cc-8-001",
+    "ch": 8,
+    "page": 252,
+    "topic": "chapter overview",
+    "q": "What is the focus of Chapter 8?",
+    "a": "Safe, accurate venipuncture procedures from request through transport."
+  },
+  {
+    "id": "cc-8-002",
+    "ch": 8,
+    "page": 253,
+    "topic": "patient registration",
+    "q": "Why is patient registration important before collection?",
+    "a": "It links the patient's identity to the test request and specimen labels."
+  },
+  {
+    "id": "cc-8-003",
+    "ch": 8,
+    "page": 253,
+    "topic": "patient registration",
+    "q": "What is a patient-specific identifier?",
+    "a": "A unique identifier such as the patient's medical record number."
+  },
+  {
+    "id": "cc-8-004",
+    "ch": 8,
+    "page": 254,
+    "topic": "requisition",
+    "q": "What is a test requisition?",
+    "a": "A request that specifies the patient, tests, and collection requirements."
+  },
+  {
+    "id": "cc-8-005",
+    "ch": 8,
+    "page": 254,
+    "topic": "requisition",
+    "q": "Name two important identifiers on a test requisition.",
+    "a": "Patient full name and a unique patient-specific identifier."
+  },
+  {
+    "id": "cc-8-006",
+    "ch": 8,
+    "page": 254,
+    "topic": "requisition",
+    "q": "What additional information may a requisition require?",
+    "a": "Test, provider, priority, collection date/time, and special instructions."
+  },
+  {
+    "id": "cc-8-007",
+    "ch": 8,
+    "page": 254,
+    "topic": "requisition",
+    "q": "Why are barcode requisitions useful?",
+    "a": "They speed accurate identification and reduce transcription mistakes."
+  },
+  {
+    "id": "cc-8-008",
+    "ch": 8,
+    "page": 254,
+    "topic": "requisition",
+    "q": "What is the first step of the venipuncture process?",
+    "a": "Receive, review, and accession the test request."
+  },
+  {
+    "id": "cc-8-009",
+    "ch": 8,
+    "page": 256,
+    "topic": "requisition",
+    "q": "What must be checked when reviewing a test request?",
+    "a": "Completeness, label match, timing, priorities, and special requirements."
+  },
+  {
+    "id": "cc-8-010",
+    "ch": 8,
+    "page": 256,
+    "topic": "requisition",
+    "q": "What should be done about a discrepancy on the requisition?",
+    "a": "Resolve it with the appropriate provider before collection."
+  },
+  {
+    "id": "cc-8-011",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What does STAT mean for specimen collection?",
+    "a": "Collect immediately because results are urgently needed."
+  },
+  {
+    "id": "cc-8-012",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What does ASAP mean?",
+    "a": "Collect as soon as possible, after higher-priority requests."
+  },
+  {
+    "id": "cc-8-013",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What is a timed specimen?",
+    "a": "A sample that must be collected at a specific recorded time."
+  },
+  {
+    "id": "cc-8-014",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What does preop mean?",
+    "a": "Before an operation or procedure."
+  },
+  {
+    "id": "cc-8-015",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What does postop mean?",
+    "a": "After an operation or procedure."
+  },
+  {
+    "id": "cc-8-016",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What does NPO mean?",
+    "a": "Nothing by mouth, as ordered for the patient."
+  },
+  {
+    "id": "cc-8-017",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "How is routine priority different from STAT?",
+    "a": "Routine collection is scheduled rather than urgent."
+  },
+  {
+    "id": "cc-8-018",
+    "ch": 8,
+    "page": 257,
+    "topic": "priority",
+    "q": "What does fasting usually allow unless otherwise ordered?",
+    "a": "Water, but no food or other beverages for the required period."
+  },
+  {
+    "id": "cc-8-019",
+    "ch": 8,
+    "page": 258,
+    "topic": "priority",
+    "q": "Which test request takes priority: STAT or routine?",
+    "a": "STAT."
+  },
+  {
+    "id": "cc-8-020",
+    "ch": 8,
+    "page": 258,
+    "topic": "accession",
+    "q": "What is accessioning a test request?",
+    "a": "Assigning a unique accession number linking a specimen to its order."
+  },
+  {
+    "id": "cc-8-021",
+    "ch": 8,
+    "page": 258,
+    "topic": "accession",
+    "q": "Is the accession number the same as the medical record number?",
+    "a": "No. An accession number identifies a particular test request/specimen."
+  },
+  {
+    "id": "cc-8-022",
+    "ch": 8,
+    "page": 258,
+    "topic": "patient approach",
+    "q": "What should be done before entering an inpatient's room?",
+    "a": "Review the order, check needed precautions, and prepare supplies."
+  },
+  {
+    "id": "cc-8-023",
+    "ch": 8,
+    "page": 259,
+    "topic": "patient approach",
+    "q": "Why are warning signs on the door or bedside important?",
+    "a": "They flag restrictions, allergies, isolation, and patient safety concerns."
+  },
+  {
+    "id": "cc-8-024",
+    "ch": 8,
+    "page": 259,
+    "topic": "patient approach",
+    "q": "What does DNR indicate?",
+    "a": "A do-not-resuscitate order; it does not by itself prohibit blood collection."
+  },
+  {
+    "id": "cc-8-025",
+    "ch": 8,
+    "page": 259,
+    "topic": "patient approach",
+    "q": "Why should the phlebotomist knock and announce their presence?",
+    "a": "To respect privacy and avoid startling the patient."
+  },
+  {
+    "id": "cc-8-026",
+    "ch": 8,
+    "page": 259,
+    "topic": "patient approach",
+    "q": "What should be checked on a quick room scan?",
+    "a": "Sharps access, IV lines, obstacles, and appropriate collection positioning."
+  },
+  {
+    "id": "cc-8-027",
+    "ch": 8,
+    "page": 260,
+    "topic": "bedside manners",
+    "q": "What is a professional bedside manner?",
+    "a": "Respectful, confident, clear, and patient-centered communication."
+  },
+  {
+    "id": "cc-8-028",
+    "ch": 8,
+    "page": 260,
+    "topic": "bedside manners",
+    "q": "How should a phlebotomist introduce themselves?",
+    "a": "State name, title, and reason for the blood collection."
+  },
+  {
+    "id": "cc-8-029",
+    "ch": 8,
+    "page": 260,
+    "topic": "identification",
+    "q": "What is the most critical step in specimen collection?",
+    "a": "Correct patient identification."
+  },
+  {
+    "id": "cc-8-030",
+    "ch": 8,
+    "page": 260,
+    "topic": "identification",
+    "q": "What two details should a patient actively state?",
+    "a": "Full legal name and date of birth."
+  },
+  {
+    "id": "cc-8-031",
+    "ch": 8,
+    "page": 261,
+    "topic": "identification",
+    "q": "What must patient ID information match?",
+    "a": "The test requisition, ID band, and specimen labels."
+  },
+  {
+    "id": "cc-8-032",
+    "ch": 8,
+    "page": 261,
+    "topic": "identification",
+    "q": "Why should you avoid asking “Are you John Smith?”?",
+    "a": "A patient may agree reflexively, even if the name is wrong."
+  },
+  {
+    "id": "cc-8-033",
+    "ch": 8,
+    "page": 261,
+    "topic": "identification",
+    "q": "How should an inpatient's ID band be verified?",
+    "a": "Compare its unique identifier and full name to the requisition."
+  },
+  {
+    "id": "cc-8-034",
+    "ch": 8,
+    "page": 261,
+    "topic": "identification",
+    "q": "What is a three-way patient ID check?",
+    "a": "Match the patient's spoken details, ID band, and test request."
+  },
+  {
+    "id": "cc-8-035",
+    "ch": 8,
+    "page": 262,
+    "topic": "identification",
+    "q": "What should happen if the patient's name or DOB differs from the order?",
+    "a": "Stop and resolve the mismatch before collecting blood."
+  },
+  {
+    "id": "cc-8-036",
+    "ch": 8,
+    "page": 262,
+    "topic": "identification",
+    "q": "What if a required inpatient ID band is missing?",
+    "a": "Follow facility policy and have the patient properly identified first."
+  },
+  {
+    "id": "cc-8-037",
+    "ch": 8,
+    "page": 262,
+    "topic": "identification",
+    "q": "Can a room or bed number identify the patient by itself?",
+    "a": "No. Room numbers are not reliable unique identifiers."
+  },
+  {
+    "id": "cc-8-038",
+    "ch": 8,
+    "page": 262,
+    "topic": "identification",
+    "q": "Why are twins or patients with similar names higher risk?",
+    "a": "They can be mistaken for one another without checking unique identifiers."
+  },
+  {
+    "id": "cc-8-039",
+    "ch": 8,
+    "page": 263,
+    "topic": "identification",
+    "q": "Should a sleeping patient be bled without waking them?",
+    "a": "No. Wake them gently and verify identity and consent."
+  },
+  {
+    "id": "cc-8-040",
+    "ch": 8,
+    "page": 263,
+    "topic": "identification",
+    "q": "How can unconscious patients be identified?",
+    "a": "Use verified records, clinical staff, and approved ID procedures."
+  },
+  {
+    "id": "cc-8-041",
+    "ch": 8,
+    "page": 263,
+    "topic": "identification",
+    "q": "What is essential for an unidentified emergency patient?",
+    "a": "A temporary unique ID that travels with requisitions and specimen labels."
+  },
+  {
+    "id": "cc-8-042",
+    "ch": 8,
+    "page": 264,
+    "topic": "identification",
+    "q": "What should be done for neonatal identification?",
+    "a": "Confirm the infant's unique ID and required registration information."
+  },
+  {
+    "id": "cc-8-043",
+    "ch": 8,
+    "page": 264,
+    "topic": "identification",
+    "q": "How are outpatients commonly identified?",
+    "a": "Ask full name and DOB, then verify a facility-accepted identifier or photo ID."
+  },
+  {
+    "id": "cc-8-044",
+    "ch": 8,
+    "page": 264,
+    "topic": "consent",
+    "q": "What is the purpose of explaining the procedure?",
+    "a": "So the patient understands and can give informed consent."
+  },
+  {
+    "id": "cc-8-045",
+    "ch": 8,
+    "page": 265,
+    "topic": "consent",
+    "q": "Can a patient refuse a blood draw?",
+    "a": "Yes. Respect refusal, document, and notify appropriate personnel."
+  },
+  {
+    "id": "cc-8-046",
+    "ch": 8,
+    "page": 265,
+    "topic": "consent",
+    "q": "Should a phlebotomist pressure a patient to agree?",
+    "a": "No. The patient retains the right to refuse."
+  },
+  {
+    "id": "cc-8-047",
+    "ch": 8,
+    "page": 265,
+    "topic": "consent",
+    "q": "Why should complex test-result questions be referred to the provider?",
+    "a": "Test interpretation is not the phlebotomist's role."
+  },
+  {
+    "id": "cc-8-048",
+    "ch": 8,
+    "page": 266,
+    "topic": "difficult patients",
+    "q": "How should a needle-phobic patient be positioned?",
+    "a": "Have them lie down, with appropriate support and precautions."
+  },
+  {
+    "id": "cc-8-049",
+    "ch": 8,
+    "page": 266,
+    "topic": "difficult patients",
+    "q": "What may help someone with severe needle anxiety?",
+    "a": "Calm reassurance, an experienced collector, and minimizing delay."
+  },
+  {
+    "id": "cc-8-050",
+    "ch": 8,
+    "page": 266,
+    "topic": "difficult patients",
+    "q": "What is important when dealing with a combative patient?",
+    "a": "Keep yourself and the patient safe; seek help and follow facility policy."
+  },
+  {
+    "id": "cc-8-051",
+    "ch": 8,
+    "page": 267,
+    "topic": "consent",
+    "q": "Can extending an arm imply consent after the procedure is explained?",
+    "a": "It may indicate consent, but always confirm permission per facility policy."
+  },
+  {
+    "id": "cc-8-052",
+    "ch": 8,
+    "page": 267,
+    "topic": "collection prep",
+    "q": "What should be checked before drawing blood?",
+    "a": "Diet restrictions, allergies, fainting history, and previous draw problems."
+  },
+  {
+    "id": "cc-8-053",
+    "ch": 8,
+    "page": 267,
+    "topic": "collection prep",
+    "q": "What should be done if the patient ate before a fasting test?",
+    "a": "Notify the appropriate provider and document nonfasting if collection proceeds."
+  },
+  {
+    "id": "cc-8-054",
+    "ch": 8,
+    "page": 267,
+    "topic": "collection prep",
+    "q": "Why ask about latex and adhesive allergies?",
+    "a": "To select safe alternative supplies."
+  },
+  {
+    "id": "cc-8-055",
+    "ch": 8,
+    "page": 268,
+    "topic": "infection control",
+    "q": "What must be done before putting on gloves?",
+    "a": "Clean or sanitize hands according to facility policy."
+  },
+  {
+    "id": "cc-8-056",
+    "ch": 8,
+    "page": 268,
+    "topic": "infection control",
+    "q": "What if hands are visibly soiled?",
+    "a": "Wash with soap and water rather than relying on sanitizer alone."
+  },
+  {
+    "id": "cc-8-057",
+    "ch": 8,
+    "page": 268,
+    "topic": "positioning",
+    "q": "How should an arm be placed for routine AC venipuncture?",
+    "a": "Well-supported and extended in a line from shoulder to wrist."
+  },
+  {
+    "id": "cc-8-058",
+    "ch": 8,
+    "page": 269,
+    "topic": "positioning",
+    "q": "Why should patients not stand during venipuncture?",
+    "a": "Fainting could cause a fall and injury."
+  },
+  {
+    "id": "cc-8-059",
+    "ch": 8,
+    "page": 269,
+    "topic": "positioning",
+    "q": "Where should a fainting-prone patient be positioned?",
+    "a": "Seated in a supported reclining chair or lying down."
+  },
+  {
+    "id": "cc-8-060",
+    "ch": 8,
+    "page": 269,
+    "topic": "tourniquet",
+    "q": "How far above the intended puncture site is a tourniquet placed?",
+    "a": "About 3–4 inches (7.5–10 cm) proximal to the site."
+  },
+  {
+    "id": "cc-8-061",
+    "ch": 8,
+    "page": 270,
+    "topic": "tourniquet",
+    "q": "How tight should a tourniquet be?",
+    "a": "Enough to slow venous flow, not to block arterial flow or cause pain."
+  },
+  {
+    "id": "cc-8-062",
+    "ch": 8,
+    "page": 270,
+    "topic": "tourniquet",
+    "q": "Can a tourniquet be placed over an open sore?",
+    "a": "No. Choose a different location."
+  },
+  {
+    "id": "cc-8-063",
+    "ch": 8,
+    "page": 270,
+    "topic": "tourniquet",
+    "q": "What may an overly tight tourniquet cause?",
+    "a": "Discomfort, bruising, or interference with blood flow."
+  },
+  {
+    "id": "cc-8-064",
+    "ch": 8,
+    "page": 273,
+    "topic": "tourniquet",
+    "q": "Why should the patient not pump the fist repeatedly?",
+    "a": "It can alter analytes, especially potassium and ionized calcium."
+  },
+  {
+    "id": "cc-8-065",
+    "ch": 8,
+    "page": 273,
+    "topic": "site choice",
+    "q": "Which antecubital vein is generally preferred first?",
+    "a": "The median cubital vein."
+  },
+  {
+    "id": "cc-8-066",
+    "ch": 8,
+    "page": 273,
+    "topic": "site choice",
+    "q": "Which veins usually follow the median cubital in preference?",
+    "a": "Cephalic, then basilic with extra caution."
+  },
+  {
+    "id": "cc-8-067",
+    "ch": 8,
+    "page": 273,
+    "topic": "site choice",
+    "q": "Why is basilic-vein puncture riskier?",
+    "a": "It is near the brachial artery and median nerve."
+  },
+  {
+    "id": "cc-8-068",
+    "ch": 8,
+    "page": 274,
+    "topic": "site choice",
+    "q": "What is palpation used to assess?",
+    "a": "A vein's location, direction, depth, size, and resilience."
+  },
+  {
+    "id": "cc-8-069",
+    "ch": 8,
+    "page": 274,
+    "topic": "site choice",
+    "q": "What should a healthy suitable vein feel like?",
+    "a": "Springy or resilient rather than hard or cordlike."
+  },
+  {
+    "id": "cc-8-070",
+    "ch": 8,
+    "page": 274,
+    "topic": "site choice",
+    "q": "Why avoid a pulsating structure?",
+    "a": "It may be an artery, not a vein."
+  },
+  {
+    "id": "cc-8-071",
+    "ch": 8,
+    "page": 274,
+    "topic": "site choice",
+    "q": "What should you do if no suitable AC vein is found?",
+    "a": "Check the opposite arm, then consider approved alternate sites or methods."
+  },
+  {
+    "id": "cc-8-072",
+    "ch": 8,
+    "page": 274,
+    "topic": "site choice",
+    "q": "Why should a sclerosed or thrombosed vein be avoided?",
+    "a": "Poor blood flow may yield an unsuitable specimen."
+  },
+  {
+    "id": "cc-8-073",
+    "ch": 8,
+    "page": 275,
+    "topic": "site cleaning",
+    "q": "Which antiseptic is typically used for routine skin prep?",
+    "a": "70% isopropyl alcohol."
+  },
+  {
+    "id": "cc-8-074",
+    "ch": 8,
+    "page": 275,
+    "topic": "site cleaning",
+    "q": "How large an area should routine alcohol prep cover?",
+    "a": "About 2–3 inches around the intended puncture site."
+  },
+  {
+    "id": "cc-8-075",
+    "ch": 8,
+    "page": 275,
+    "topic": "site cleaning",
+    "q": "How long should the cleaned site air-dry?",
+    "a": "About 30–60 seconds, or per antiseptic instructions."
+  },
+  {
+    "id": "cc-8-076",
+    "ch": 8,
+    "page": 275,
+    "topic": "site cleaning",
+    "q": "Why let the antiseptic air-dry naturally?",
+    "a": "To maximize antisepsis and reduce stinging and contamination."
+  },
+  {
+    "id": "cc-8-077",
+    "ch": 8,
+    "page": 275,
+    "topic": "site cleaning",
+    "q": "Can you blow or fan on the cleaned site?",
+    "a": "No. Allow natural drying without recontamination."
+  },
+  {
+    "id": "cc-8-078",
+    "ch": 8,
+    "page": 275,
+    "topic": "site cleaning",
+    "q": "What if the vein must be repalpated after cleaning?",
+    "a": "Clean the area again using proper aseptic technique."
+  },
+  {
+    "id": "cc-8-079",
+    "ch": 8,
+    "page": 276,
+    "topic": "equipment",
+    "q": "What equipment is assembled before needle insertion?",
+    "a": "Appropriate sterile collection device, tubes, gauze, and sharps access."
+  },
+  {
+    "id": "cc-8-080",
+    "ch": 8,
+    "page": 276,
+    "topic": "equipment",
+    "q": "What must be checked on needles before use?",
+    "a": "Unbroken sterile packaging and no damage or defects."
+  },
+  {
+    "id": "cc-8-081",
+    "ch": 8,
+    "page": 277,
+    "topic": "equipment",
+    "q": "Where should extra collection supplies be placed?",
+    "a": "Within easy reach, away from the patient's arm and contaminated surfaces."
+  },
+  {
+    "id": "cc-8-082",
+    "ch": 8,
+    "page": 277,
+    "topic": "equipment",
+    "q": "Why keep a collection tray off the patient's bed?",
+    "a": "To avoid contamination."
+  },
+  {
+    "id": "cc-8-083",
+    "ch": 8,
+    "page": 277,
+    "topic": "procedure",
+    "q": "When is the tourniquet normally reapplied?",
+    "a": "Just before the puncture after selecting and cleaning the site."
+  },
+  {
+    "id": "cc-8-084",
+    "ch": 8,
+    "page": 278,
+    "topic": "procedure",
+    "q": "What is the purpose of anchoring a vein?",
+    "a": "To hold the vein steady and stretch the skin taut."
+  },
+  {
+    "id": "cc-8-085",
+    "ch": 8,
+    "page": 278,
+    "topic": "procedure",
+    "q": "Where is the anchoring thumb normally placed?",
+    "a": "About 1–2 inches below the selected puncture site."
+  },
+  {
+    "id": "cc-8-086",
+    "ch": 8,
+    "page": 279,
+    "topic": "needle insertion",
+    "q": "Which direction should the needle bevel face?",
+    "a": "Upward."
+  },
+  {
+    "id": "cc-8-087",
+    "ch": 8,
+    "page": 279,
+    "topic": "needle insertion",
+    "q": "What insertion angle is used for routine AC venipuncture?",
+    "a": "30 degrees or less, adjusted for vein depth."
+  },
+  {
+    "id": "cc-8-088",
+    "ch": 8,
+    "page": 279,
+    "topic": "needle insertion",
+    "q": "What insertion angle is typical for a butterfly on a hand vein?",
+    "a": "About 10 degrees or less."
+  },
+  {
+    "id": "cc-8-089",
+    "ch": 8,
+    "page": 279,
+    "topic": "needle insertion",
+    "q": "Why should blind probing with a needle be avoided?",
+    "a": "It can damage nerves, arteries, and tissues."
+  },
+  {
+    "id": "cc-8-090",
+    "ch": 8,
+    "page": 279,
+    "topic": "needle insertion",
+    "q": "What might a marked electric-shock pain during insertion mean?",
+    "a": "Possible nerve involvement; stop and remove the needle."
+  },
+  {
+    "id": "cc-8-091",
+    "ch": 8,
+    "page": 280,
+    "topic": "blood flow",
+    "q": "What can indicate successful needle entry into a vein?",
+    "a": "A change in resistance, blood flash, or blood flowing into the device."
+  },
+  {
+    "id": "cc-8-092",
+    "ch": 8,
+    "page": 280,
+    "topic": "blood flow",
+    "q": "What should be done as soon as blood flow is established?",
+    "a": "Release the tourniquet and ask the patient to relax their fist."
+  },
+  {
+    "id": "cc-8-093",
+    "ch": 8,
+    "page": 280,
+    "topic": "blood flow",
+    "q": "Why release the tourniquet promptly?",
+    "a": "To reduce hemoconcentration and return normal circulation."
+  },
+  {
+    "id": "cc-8-094",
+    "ch": 8,
+    "page": 281,
+    "topic": "tube collection",
+    "q": "How should multiple tubes be filled?",
+    "a": "In the recommended order of draw."
+  },
+  {
+    "id": "cc-8-095",
+    "ch": 8,
+    "page": 281,
+    "topic": "tube collection",
+    "q": "Why must the tube holder stay steady during filling?",
+    "a": "Movement can dislodge the needle or injure the vein."
+  },
+  {
+    "id": "cc-8-096",
+    "ch": 8,
+    "page": 282,
+    "topic": "tube collection",
+    "q": "Why should additive tubes be mixed promptly after removal?",
+    "a": "To prevent clotting and distribute additives evenly."
+  },
+  {
+    "id": "cc-8-097",
+    "ch": 8,
+    "page": 282,
+    "topic": "tube collection",
+    "q": "How should tubes be mixed?",
+    "a": "With gentle inversions, not vigorous shaking."
+  },
+  {
+    "id": "cc-8-098",
+    "ch": 8,
+    "page": 282,
+    "topic": "tube collection",
+    "q": "Can two partly filled tubes be poured together?",
+    "a": "No. It can alter additive ratios and contaminate specimens."
+  },
+  {
+    "id": "cc-8-099",
+    "ch": 8,
+    "page": 283,
+    "topic": "needle removal",
+    "q": "What should happen before pressure is applied with gauze?",
+    "a": "Withdraw the needle and activate the safety feature as directed."
+  },
+  {
+    "id": "cc-8-100",
+    "ch": 8,
+    "page": 283,
+    "topic": "needle removal",
+    "q": "Why must gauze not press directly on the needle during removal?",
+    "a": "It can deflect the needle and cause a needlestick or injury."
+  },
+  {
+    "id": "cc-8-101",
+    "ch": 8,
+    "page": 283,
+    "topic": "needle removal",
+    "q": "What initial direct pressure is normally recommended after removal?",
+    "a": "About 3–5 minutes or until bleeding stops."
+  },
+  {
+    "id": "cc-8-102",
+    "ch": 8,
+    "page": 283,
+    "topic": "needle disposal",
+    "q": "Where is the used needle and holder discarded?",
+    "a": "Together into a sharps container, without disassembly."
+  },
+  {
+    "id": "cc-8-103",
+    "ch": 8,
+    "page": 283,
+    "topic": "needle disposal",
+    "q": "Is recapping a used blood collection needle allowed?",
+    "a": "No. It creates a needlestick risk."
+  },
+  {
+    "id": "cc-8-104",
+    "ch": 8,
+    "page": 284,
+    "topic": "labeling",
+    "q": "When must blood collection tubes be labeled?",
+    "a": "Immediately after collection in the patient's presence."
+  },
+  {
+    "id": "cc-8-105",
+    "ch": 8,
+    "page": 284,
+    "topic": "labeling",
+    "q": "Which key details belong on a specimen label?",
+    "a": "Patient name, unique ID, collection date/time, and collector identification."
+  },
+  {
+    "id": "cc-8-106",
+    "ch": 8,
+    "page": 285,
+    "topic": "labeling",
+    "q": "Why compare labeled tubes with the patient's identifiers?",
+    "a": "To catch labeling errors before the specimen leaves the bedside."
+  },
+  {
+    "id": "cc-8-107",
+    "ch": 8,
+    "page": 285,
+    "topic": "transport",
+    "q": "What is an example of special specimen handling?",
+    "a": "Protecting bilirubin from light or keeping an ordered sample chilled."
+  },
+  {
+    "id": "cc-8-108",
+    "ch": 8,
+    "page": 285,
+    "topic": "aftercare",
+    "q": "When may a patient be bandaged?",
+    "a": "Only after bleeding has stopped and the site has been checked."
+  },
+  {
+    "id": "cc-8-109",
+    "ch": 8,
+    "page": 286,
+    "topic": "aftercare",
+    "q": "What is the final step after a venipuncture visit?",
+    "a": "Transport specimens to the laboratory promptly."
+  },
+  {
+    "id": "cc-8-110",
+    "ch": 8,
+    "page": 286,
+    "topic": "aftercare",
+    "q": "Why must incidents such as fainting be documented?",
+    "a": "For patient safety and appropriate follow-up."
+  },
+  {
+    "id": "cc-8-111",
+    "ch": 8,
+    "page": 294,
+    "topic": "butterfly",
+    "q": "When might a butterfly and ETS holder be preferred?",
+    "a": "When collecting from a small or difficult hand vein."
+  },
+  {
+    "id": "cc-8-112",
+    "ch": 8,
+    "page": 296,
+    "topic": "butterfly",
+    "q": "Why use a shallow needle angle in hand veins?",
+    "a": "Hand veins are superficial and easily injured."
+  },
+  {
+    "id": "cc-8-113",
+    "ch": 8,
+    "page": 298,
+    "topic": "syringe",
+    "q": "Why may syringes be used for fragile veins?",
+    "a": "They allow slower, controlled suction."
+  },
+  {
+    "id": "cc-8-114",
+    "ch": 8,
+    "page": 300,
+    "topic": "syringe",
+    "q": "How should blood leave a syringe for an evacuated tube?",
+    "a": "By its tube vacuum through an approved syringe transfer device."
+  },
+  {
+    "id": "cc-8-115",
+    "ch": 8,
+    "page": 300,
+    "topic": "syringe",
+    "q": "Why shouldn't a syringe plunger be forced during tube transfer?",
+    "a": "It can cause hemolysis or create excess pressure."
+  },
+  {
+    "id": "cc-8-116",
+    "ch": 8,
+    "page": 302,
+    "topic": "failed draw",
+    "q": "After two unsuccessful collection attempts, what should happen?",
+    "a": "Ask another qualified collector and follow facility policy."
+  },
+  {
+    "id": "cc-8-117",
+    "ch": 8,
+    "page": 302,
+    "topic": "pediatrics",
+    "q": "Why are children at special risk from excessive blood draws?",
+    "a": "They have smaller total blood volumes and can develop iatrogenic anemia."
+  },
+  {
+    "id": "cc-8-118",
+    "ch": 8,
+    "page": 302,
+    "topic": "pediatrics",
+    "q": "Which collection method is often preferred for infants?",
+    "a": "Capillary collection when it meets the test requirements."
+  },
+  {
+    "id": "cc-8-119",
+    "ch": 8,
+    "page": 303,
+    "topic": "pediatrics",
+    "q": "Why should pediatric specimens use minimal blood volume?",
+    "a": "To reduce blood-loss complications and iatrogenic anemia."
+  },
+  {
+    "id": "cc-8-120",
+    "ch": 8,
+    "page": 304,
+    "topic": "pediatrics",
+    "q": "Why use age-appropriate explanations for a child?",
+    "a": "To reduce anxiety and gain cooperation."
+  },
+  {
+    "id": "cc-8-121",
+    "ch": 8,
+    "page": 304,
+    "topic": "pediatrics",
+    "q": "Should a collector promise a child that the puncture will not hurt?",
+    "a": "No. Use truthful, reassuring language."
+  },
+  {
+    "id": "cc-8-122",
+    "ch": 8,
+    "page": 305,
+    "topic": "pediatrics",
+    "q": "What is the role of a caregiver during pediatric collection?",
+    "a": "Support positioning and reassurance per safety protocol."
+  },
+  {
+    "id": "cc-8-123",
+    "ch": 8,
+    "page": 305,
+    "topic": "pediatrics",
+    "q": "What equipment is commonly preferred for small pediatric veins?",
+    "a": "Small-volume tubes and an appropriately sized butterfly set."
+  },
+  {
+    "id": "cc-8-124",
+    "ch": 8,
+    "page": 306,
+    "topic": "geriatrics",
+    "q": "Why do older adults require special venipuncture care?",
+    "a": "Skin and veins may be fragile, and mobility or sensory limits may be present."
+  },
+  {
+    "id": "cc-8-125",
+    "ch": 8,
+    "page": 307,
+    "topic": "geriatrics",
+    "q": "How should instructions be given to a patient with hearing loss?",
+    "a": "Face them, speak clearly, and allow time for a response."
+  },
+  {
+    "id": "cc-8-126",
+    "ch": 8,
+    "page": 307,
+    "topic": "geriatrics",
+    "q": "What accommodation helps a visually impaired patient?",
+    "a": "Clear spoken explanation and suitable lighting."
+  },
+  {
+    "id": "cc-8-127",
+    "ch": 8,
+    "page": 308,
+    "topic": "geriatrics",
+    "q": "Why might bleeding last longer in an older adult?",
+    "a": "Anticoagulant treatment or coagulation problems can delay clotting."
+  },
+  {
+    "id": "cc-8-128",
+    "ch": 8,
+    "page": 308,
+    "topic": "geriatrics",
+    "q": "Why is drawing directly from a wheelchair sometimes preferable?",
+    "a": "It avoids unsafe transfers and allows supported positioning."
+  },
+  {
+    "id": "cc-8-129",
+    "ch": 8,
+    "page": 309,
+    "topic": "geriatrics",
+    "q": "Why must you avoid excessive force in an older patient's arm?",
+    "a": "It can cause pain or injury in stiff or arthritic joints."
+  },
+  {
+    "id": "cc-8-130",
+    "ch": 8,
+    "page": 309,
+    "topic": "geriatrics",
+    "q": "How should a tourniquet be used on fragile geriatric skin?",
+    "a": "Only tight enough to aid vein selection, without damaging tissue."
+  },
+  {
+    "id": "cc-8-131",
+    "ch": 8,
+    "page": 310,
+    "topic": "dialysis",
+    "q": "Which arm should be avoided when a patient has a dialysis fistula?",
+    "a": "The arm with the fistula or graft."
+  },
+  {
+    "id": "cc-8-132",
+    "ch": 8,
+    "page": 310,
+    "topic": "special care",
+    "q": "What special approach is needed for home-care collections?",
+    "a": "Bring suitable safety and specimen transport supplies and verify patient ID."
+  },
+  {
+    "id": "cc-8-133",
+    "ch": 8,
+    "page": 310,
+    "topic": "special care",
+    "q": "What is especially important when interacting with hospice patients?",
+    "a": "Compassion, dignity, and gentle respectful care."
+  },
+  {
+    "id": "cc-8-134",
+    "ch": 8,
+    "page": 311,
+    "topic": "review",
+    "q": "What should you do when a patient strongly refuses collection?",
+    "a": "Stop, respect refusal, and notify the nurse or provider."
+  },
+  {
+    "id": "cc-8-135",
+    "ch": 8,
+    "page": 311,
+    "topic": "review",
+    "q": "Why is the antiseptic allowed to dry before needle insertion?",
+    "a": "To optimize infection control and reduce discomfort."
+  },
+  {
+    "id": "cc-9-001",
+    "ch": 9,
+    "page": 316,
+    "topic": "overview",
+    "q": "What is the preexamination or preanalytical phase?",
+    "a": "Everything from the test order through collection and preparation before analysis."
+  },
+  {
+    "id": "cc-9-002",
+    "ch": 9,
+    "page": 317,
+    "topic": "overview",
+    "q": "Why does the preanalytical phase matter?",
+    "a": "Mistakes before testing can affect specimen quality and patient care."
+  },
+  {
+    "id": "cc-9-003",
+    "ch": 9,
+    "page": 317,
+    "topic": "terminology",
+    "q": "What is an analyte?",
+    "a": "A substance or component measured by a laboratory test."
+  },
+  {
+    "id": "cc-9-004",
+    "ch": 9,
+    "page": 317,
+    "topic": "reference ranges",
+    "q": "What is a reference interval?",
+    "a": "A range developed from results in a defined healthy reference population."
+  },
+  {
+    "id": "cc-9-005",
+    "ch": 9,
+    "page": 317,
+    "topic": "reference ranges",
+    "q": "Are reference intervals identical for all patients?",
+    "a": "No. They may differ by age, sex, illness, or other factors."
+  },
+  {
+    "id": "cc-9-006",
+    "ch": 9,
+    "page": 317,
+    "topic": "basal state",
+    "q": "What is the basal state?",
+    "a": "A resting early-morning condition after roughly 12 hours without food."
+  },
+  {
+    "id": "cc-9-007",
+    "ch": 9,
+    "page": 318,
+    "topic": "physiologic variables",
+    "q": "Why can patient age affect blood test results?",
+    "a": "Blood cell values, hormones, and organ function vary across the lifespan."
+  },
+  {
+    "id": "cc-9-008",
+    "ch": 9,
+    "page": 318,
+    "topic": "physiologic variables",
+    "q": "How can high altitude affect RBC, hemoglobin, and hematocrit?",
+    "a": "They may increase as the body adapts to lower oxygen levels."
+  },
+  {
+    "id": "cc-9-009",
+    "ch": 9,
+    "page": 318,
+    "topic": "dehydration",
+    "q": "What is hemoconcentration due to dehydration?",
+    "a": "A relative rise in concentration of some blood components from fluid loss."
+  },
+  {
+    "id": "cc-9-010",
+    "ch": 9,
+    "page": 318,
+    "topic": "dehydration",
+    "q": "Why can dehydration make venipuncture harder?",
+    "a": "Reduced fluid volume can make veins less prominent."
+  },
+  {
+    "id": "cc-9-011",
+    "ch": 9,
+    "page": 318,
+    "topic": "diet",
+    "q": "Why can eating or drinking before testing matter?",
+    "a": "Food and fluids can temporarily change analyte concentrations."
+  },
+  {
+    "id": "cc-9-012",
+    "ch": 9,
+    "page": 318,
+    "topic": "diet",
+    "q": "What fasting interval is typical for many laboratory tests in the textbook?",
+    "a": "About 8–12 hours, depending on the test."
+  },
+  {
+    "id": "cc-9-013",
+    "ch": 9,
+    "page": 318,
+    "topic": "diet",
+    "q": "Does routine fasting usually mean no water?",
+    "a": "No. Water is generally allowed unless another order requires NPO."
+  },
+  {
+    "id": "cc-9-014",
+    "ch": 9,
+    "page": 318,
+    "topic": "diet",
+    "q": "Why should fasting samples not be delayed after a long fast?",
+    "a": "Prolonged fasting can cause undesirable metabolic changes."
+  },
+  {
+    "id": "cc-9-015",
+    "ch": 9,
+    "page": 319,
+    "topic": "diet",
+    "q": "How can high-protein intake affect some blood tests?",
+    "a": "It can increase ammonia, urea, and uric acid."
+  },
+  {
+    "id": "cc-9-016",
+    "ch": 9,
+    "page": 319,
+    "topic": "diet",
+    "q": "What may happen to glucose and insulin after carbohydrates?",
+    "a": "Both can rise after eating."
+  },
+  {
+    "id": "cc-9-017",
+    "ch": 9,
+    "page": 319,
+    "topic": "diet",
+    "q": "What are lipemic specimens?",
+    "a": "Specimens with elevated fat that appear cloudy or milky."
+  },
+  {
+    "id": "cc-9-018",
+    "ch": 9,
+    "page": 319,
+    "topic": "diet",
+    "q": "Why can lipemia interfere with some laboratory tests?",
+    "a": "Cloudiness can interfere with analytical methods."
+  },
+  {
+    "id": "cc-9-019",
+    "ch": 9,
+    "page": 319,
+    "topic": "diet",
+    "q": "Why is a 12-hour fast often needed before triglyceride testing?",
+    "a": "Post-meal lipids can remain elevated for hours."
+  },
+  {
+    "id": "cc-9-020",
+    "ch": 9,
+    "page": 319,
+    "topic": "circadian",
+    "q": "What are diurnal or circadian variations?",
+    "a": "Predictable changes in analyte levels over a 24-hour cycle."
+  },
+  {
+    "id": "cc-9-021",
+    "ch": 9,
+    "page": 319,
+    "topic": "circadian",
+    "q": "Why is collection time critical for cortisol testing?",
+    "a": "Cortisol changes substantially by time of day."
+  },
+  {
+    "id": "cc-9-022",
+    "ch": 9,
+    "page": 319,
+    "topic": "circadian",
+    "q": "When does cortisol usually peak in the textbook?",
+    "a": "In the morning, around 8 a.m."
+  },
+  {
+    "id": "cc-9-023",
+    "ch": 9,
+    "page": 319,
+    "topic": "circadian",
+    "q": "When does melatonin normally increase?",
+    "a": "At night, during darkness."
+  },
+  {
+    "id": "cc-9-024",
+    "ch": 9,
+    "page": 320,
+    "topic": "drug effects",
+    "q": "Why can medication affect laboratory results?",
+    "a": "It may change body physiology or directly interfere with an assay."
+  },
+  {
+    "id": "cc-9-025",
+    "ch": 9,
+    "page": 320,
+    "topic": "drug effects",
+    "q": "Why should medications be documented on the test request when relevant?",
+    "a": "They can cause falsely high, low, positive, or negative test findings."
+  },
+  {
+    "id": "cc-9-026",
+    "ch": 9,
+    "page": 320,
+    "topic": "drug effects",
+    "q": "Which blood-thinning medicines raise special bleeding concerns?",
+    "a": "Warfarin and aspirin or other anticoagulant/antiplatelet drugs."
+  },
+  {
+    "id": "cc-9-027",
+    "ch": 9,
+    "page": 320,
+    "topic": "drug effects",
+    "q": "How might chemotherapy affect blood counts?",
+    "a": "It may lower white cells and platelets."
+  },
+  {
+    "id": "cc-9-028",
+    "ch": 9,
+    "page": 320,
+    "topic": "drug effects",
+    "q": "Which common supplement can interfere with certain immunoassays?",
+    "a": "Biotin, or vitamin B7."
+  },
+  {
+    "id": "cc-9-029",
+    "ch": 9,
+    "page": 320,
+    "topic": "drug effects",
+    "q": "How can thiazide diuretics affect blood chemistry?",
+    "a": "They may change electrolytes, calcium, and glucose."
+  },
+  {
+    "id": "cc-9-030",
+    "ch": 9,
+    "page": 320,
+    "topic": "exercise",
+    "q": "Why does recent exercise matter for blood tests?",
+    "a": "It can change enzymes, lactate, glucose, hormones, and other analytes."
+  },
+  {
+    "id": "cc-9-031",
+    "ch": 9,
+    "page": 321,
+    "topic": "exercise",
+    "q": "What happens to potassium shortly after intense muscle activity?",
+    "a": "It may transiently increase."
+  },
+  {
+    "id": "cc-9-032",
+    "ch": 9,
+    "page": 321,
+    "topic": "exercise",
+    "q": "Why should patients avoid fist pumping during a draw?",
+    "a": "It can falsely elevate potassium and alter other analytes."
+  },
+  {
+    "id": "cc-9-033",
+    "ch": 9,
+    "page": 321,
+    "topic": "exercise",
+    "q": "Which enzymes may increase after vigorous muscle exercise?",
+    "a": "Creatine kinase (CK) and LDH."
+  },
+  {
+    "id": "cc-9-034",
+    "ch": 9,
+    "page": 321,
+    "topic": "exercise",
+    "q": "What exercise restriction does the chapter recommend before blood testing?",
+    "a": "Avoid vigorous exercise for about 24 hours where applicable."
+  },
+  {
+    "id": "cc-9-035",
+    "ch": 9,
+    "page": 321,
+    "topic": "physiologic variables",
+    "q": "How can biological sex affect reference intervals?",
+    "a": "Some results, such as RBC, hemoglobin, and hematocrit, differ."
+  },
+  {
+    "id": "cc-9-036",
+    "ch": 9,
+    "page": 321,
+    "topic": "physiologic variables",
+    "q": "What can an intramuscular injection temporarily elevate?",
+    "a": "Creatine kinase (CK) and LDH."
+  },
+  {
+    "id": "cc-9-037",
+    "ch": 9,
+    "page": 321,
+    "topic": "jaundice",
+    "q": "What causes jaundice and icteric specimens?",
+    "a": "Increased bilirubin, producing yellow discoloration."
+  },
+  {
+    "id": "cc-9-038",
+    "ch": 9,
+    "page": 321,
+    "topic": "jaundice",
+    "q": "What is the term for yellow serum from increased bilirubin?",
+    "a": "Icteric."
+  },
+  {
+    "id": "cc-9-039",
+    "ch": 9,
+    "page": 322,
+    "topic": "position",
+    "q": "How can changing from lying to standing affect plasma volume?",
+    "a": "Plasma volume can decrease, concentrating some analytes."
+  },
+  {
+    "id": "cc-9-040",
+    "ch": 9,
+    "page": 322,
+    "topic": "position",
+    "q": "Why should patient posture be standardized for certain tests?",
+    "a": "Position changes can alter analyte concentrations and reference comparison."
+  },
+  {
+    "id": "cc-9-041",
+    "ch": 9,
+    "page": 322,
+    "topic": "position",
+    "q": "What quiet rest period is suggested before lipid profile collection?",
+    "a": "At least 5 minutes in a consistent sitting or lying position."
+  },
+  {
+    "id": "cc-9-042",
+    "ch": 9,
+    "page": 322,
+    "topic": "position",
+    "q": "Why might aldosterone testing require a specified posture?",
+    "a": "Aldosterone and renin concentrations respond to body position."
+  },
+  {
+    "id": "cc-9-043",
+    "ch": 9,
+    "page": 322,
+    "topic": "pregnancy",
+    "q": "Why may pregnant patients have lower RBC measurements?",
+    "a": "Increased plasma volume dilutes red blood cells."
+  },
+  {
+    "id": "cc-9-044",
+    "ch": 9,
+    "page": 323,
+    "topic": "smoking",
+    "q": "How can smoking affect CBC and chemistry results?",
+    "a": "It can alter WBC, RBC, hemoglobin, glucose, and other markers."
+  },
+  {
+    "id": "cc-9-045",
+    "ch": 9,
+    "page": 323,
+    "topic": "smoking",
+    "q": "Why may capillary collection be difficult in smokers?",
+    "a": "Circulation to the fingertips can be impaired."
+  },
+  {
+    "id": "cc-9-046",
+    "ch": 9,
+    "page": 323,
+    "topic": "stress",
+    "q": "What blood count may rise temporarily with stress or crying?",
+    "a": "White blood cell count."
+  },
+  {
+    "id": "cc-9-047",
+    "ch": 9,
+    "page": 323,
+    "topic": "stress",
+    "q": "How can emotional stress affect cortisol and glucose regulation?",
+    "a": "It can increase stress hormones and change related analytes."
+  },
+  {
+    "id": "cc-9-048",
+    "ch": 9,
+    "page": 323,
+    "topic": "environment",
+    "q": "How may excessive sweating affect a specimen?",
+    "a": "Fluid loss can lead to hemoconcentration."
+  },
+  {
+    "id": "cc-9-049",
+    "ch": 9,
+    "page": 324,
+    "topic": "problem sites",
+    "q": "Why avoid a scarred or burned site if possible?",
+    "a": "Poor circulation and tissue damage can impair collection."
+  },
+  {
+    "id": "cc-9-050",
+    "ch": 9,
+    "page": 324,
+    "topic": "problem sites",
+    "q": "When a tattooed area must be used, what should be avoided?",
+    "a": "Puncturing directly through ink when another spot is available."
+  },
+  {
+    "id": "cc-9-051",
+    "ch": 9,
+    "page": 324,
+    "topic": "problem sites",
+    "q": "What does a hard, cordlike vein suggest?",
+    "a": "Sclerosis, thrombosis, or obstruction."
+  },
+  {
+    "id": "cc-9-052",
+    "ch": 9,
+    "page": 324,
+    "topic": "problem sites",
+    "q": "Why should damaged or thrombosed veins be avoided?",
+    "a": "Blood flow may be impaired and test results unreliable."
+  },
+  {
+    "id": "cc-9-053",
+    "ch": 9,
+    "page": 324,
+    "topic": "edema",
+    "q": "What is edema?",
+    "a": "Swelling from excess fluid in the tissues."
+  },
+  {
+    "id": "cc-9-054",
+    "ch": 9,
+    "page": 324,
+    "topic": "edema",
+    "q": "Why is venipuncture through edema discouraged?",
+    "a": "Tissue fluid can contaminate or dilute the sample."
+  },
+  {
+    "id": "cc-9-055",
+    "ch": 9,
+    "page": 325,
+    "topic": "hematoma",
+    "q": "What is a hematoma?",
+    "a": "A collection of leaked blood within surrounding tissue."
+  },
+  {
+    "id": "cc-9-056",
+    "ch": 9,
+    "page": 325,
+    "topic": "hematoma",
+    "q": "Why avoid drawing through a hematoma?",
+    "a": "Blood and tissue-fluid contamination can distort results."
+  },
+  {
+    "id": "cc-9-057",
+    "ch": 9,
+    "page": 325,
+    "topic": "mastectomy",
+    "q": "What arm is generally avoided after mastectomy with lymph node removal?",
+    "a": "The arm on the affected side unless the treating team approves otherwise."
+  },
+  {
+    "id": "cc-9-058",
+    "ch": 9,
+    "page": 325,
+    "topic": "mastectomy",
+    "q": "Why may an arm following lymph-node surgery be unsuitable?",
+    "a": "Risk of impaired lymph drainage and lymphedema."
+  },
+  {
+    "id": "cc-9-059",
+    "ch": 9,
+    "page": 325,
+    "topic": "obesity",
+    "q": "Why may veins be hard to find in an obese patient?",
+    "a": "Veins can lie deeper beneath subcutaneous tissue."
+  },
+  {
+    "id": "cc-9-060",
+    "ch": 9,
+    "page": 326,
+    "topic": "special sites",
+    "q": "Why avoid blood draws from a paralyzed arm when possible?",
+    "a": "Reduced flow, possible thrombosis, and difficulty detecting injury."
+  },
+  {
+    "id": "cc-9-061",
+    "ch": 9,
+    "page": 326,
+    "topic": "vascular access",
+    "q": "What is a vascular access device (VAD)?",
+    "a": "A catheter or device giving access to a vein or artery for treatment or testing."
+  },
+  {
+    "id": "cc-9-062",
+    "ch": 9,
+    "page": 326,
+    "topic": "vascular access",
+    "q": "Who should collect blood directly from a VAD?",
+    "a": "Personnel specially trained and authorized under facility policy."
+  },
+  {
+    "id": "cc-9-063",
+    "ch": 9,
+    "page": 326,
+    "topic": "IV lines",
+    "q": "Why is blood collection above an IV line discouraged?",
+    "a": "The specimen may be diluted or contaminated with infused fluid."
+  },
+  {
+    "id": "cc-9-064",
+    "ch": 9,
+    "page": 327,
+    "topic": "IV lines",
+    "q": "What is generally preferred when a patient has an IV in one arm?",
+    "a": "Draw from the opposite arm, if appropriate."
+  },
+  {
+    "id": "cc-9-065",
+    "ch": 9,
+    "page": 327,
+    "topic": "IV lines",
+    "q": "If collection below an IV is unavoidable, who should manage the IV?",
+    "a": "The patient's nurse or other authorized clinician."
+  },
+  {
+    "id": "cc-9-066",
+    "ch": 9,
+    "page": 327,
+    "topic": "IV lines",
+    "q": "What should be documented if blood is drawn below an IV?",
+    "a": "The site, arm, and type of IV fluid, according to policy."
+  },
+  {
+    "id": "cc-9-067",
+    "ch": 9,
+    "page": 327,
+    "topic": "vascular access",
+    "q": "What is an IV catheter lock?",
+    "a": "A needleless capped access point on an IV catheter."
+  },
+  {
+    "id": "cc-9-068",
+    "ch": 9,
+    "page": 328,
+    "topic": "vascular access",
+    "q": "What is an arterial line (A-line) used for?",
+    "a": "Continuous blood-pressure monitoring and arterial blood access."
+  },
+  {
+    "id": "cc-9-069",
+    "ch": 9,
+    "page": 328,
+    "topic": "vascular access",
+    "q": "What is an AV fistula?",
+    "a": "A surgically created artery-to-vein connection, often for dialysis."
+  },
+  {
+    "id": "cc-9-070",
+    "ch": 9,
+    "page": 328,
+    "topic": "vascular access",
+    "q": "What is an AV graft?",
+    "a": "Artificial tubing that connects an artery and a vein for dialysis access."
+  },
+  {
+    "id": "cc-9-071",
+    "ch": 9,
+    "page": 328,
+    "topic": "vascular access",
+    "q": "What sensation often identifies a dialysis AV fistula?",
+    "a": "A palpable buzzing vibration called a thrill."
+  },
+  {
+    "id": "cc-9-072",
+    "ch": 9,
+    "page": 328,
+    "topic": "vascular access",
+    "q": "May you use a tourniquet or venipuncture on an AV fistula arm?",
+    "a": "No. Protect dialysis access."
+  },
+  {
+    "id": "cc-9-073",
+    "ch": 9,
+    "page": 329,
+    "topic": "vascular access",
+    "q": "What does CVC stand for?",
+    "a": "Central venous catheter."
+  },
+  {
+    "id": "cc-9-074",
+    "ch": 9,
+    "page": 329,
+    "topic": "vascular access",
+    "q": "What is an implanted port?",
+    "a": "A chamber under the skin connected to a central catheter."
+  },
+  {
+    "id": "cc-9-075",
+    "ch": 9,
+    "page": 329,
+    "topic": "vascular access",
+    "q": "What does PICC stand for?",
+    "a": "Peripherally inserted central catheter."
+  },
+  {
+    "id": "cc-9-076",
+    "ch": 9,
+    "page": 329,
+    "topic": "vascular access",
+    "q": "Where does a PICC typically enter the body?",
+    "a": "Through a peripheral arm vein, with the tip in the central venous system."
+  },
+  {
+    "id": "cc-9-077",
+    "ch": 9,
+    "page": 329,
+    "topic": "vascular access",
+    "q": "Why are CVAD samples sometimes discarded before collection?",
+    "a": "To remove flush solution and avoid dilution or contamination."
+  },
+  {
+    "id": "cc-9-078",
+    "ch": 9,
+    "page": 330,
+    "topic": "allergies",
+    "q": "What must be checked about supplies before collection?",
+    "a": "Latex, adhesive, and antiseptic allergies or sensitivities."
+  },
+  {
+    "id": "cc-9-079",
+    "ch": 9,
+    "page": 331,
+    "topic": "allergies",
+    "q": "What is a safer alternative if adhesive bandages cause a reaction?",
+    "a": "Gauze secured with a suitable nonadhesive wrap, per policy."
+  },
+  {
+    "id": "cc-9-080",
+    "ch": 9,
+    "page": 332,
+    "topic": "allergies",
+    "q": "What is the risk of exposing a severely latex-allergic patient to latex?",
+    "a": "A potentially life-threatening allergic reaction."
+  },
+  {
+    "id": "cc-9-081",
+    "ch": 9,
+    "page": 332,
+    "topic": "complications",
+    "q": "What is syncope?",
+    "a": "Fainting or temporary loss of consciousness."
+  },
+  {
+    "id": "cc-9-082",
+    "ch": 9,
+    "page": 332,
+    "topic": "complications",
+    "q": "What type of response often causes fainting during a draw?",
+    "a": "A vasovagal response."
+  },
+  {
+    "id": "cc-9-083",
+    "ch": 9,
+    "page": 332,
+    "topic": "complications",
+    "q": "Why is it important to ask about previous fainting episodes?",
+    "a": "They signal a need for extra positioning and safety precautions."
+  },
+  {
+    "id": "cc-9-084",
+    "ch": 9,
+    "page": 333,
+    "topic": "fainting",
+    "q": "What is the first action when a patient begins fainting during collection?",
+    "a": "Stop the draw, release the tourniquet, and remove the needle safely."
+  },
+  {
+    "id": "cc-9-085",
+    "ch": 9,
+    "page": 333,
+    "topic": "fainting",
+    "q": "What should be done immediately after stopping a draw for fainting?",
+    "a": "Apply pressure, support the patient, and follow emergency protocol."
+  },
+  {
+    "id": "cc-9-086",
+    "ch": 9,
+    "page": 333,
+    "topic": "fainting",
+    "q": "Why should a fainting patient not be left alone?",
+    "a": "They may fall or lose consciousness again."
+  },
+  {
+    "id": "cc-9-087",
+    "ch": 9,
+    "page": 333,
+    "topic": "fainting",
+    "q": "Should ammonia inhalants be used to revive a fainting patient?",
+    "a": "No. They can cause respiratory distress in vulnerable patients."
+  },
+  {
+    "id": "cc-9-088",
+    "ch": 9,
+    "page": 333,
+    "topic": "fainting",
+    "q": "What must be done if the patient does not respond?",
+    "a": "Call for appropriate emergency or first-aid assistance."
+  },
+  {
+    "id": "cc-9-089",
+    "ch": 9,
+    "page": 334,
+    "topic": "complications",
+    "q": "What should you do if a patient vomits during venipuncture?",
+    "a": "Stop the procedure immediately and protect the patient."
+  },
+  {
+    "id": "cc-9-090",
+    "ch": 9,
+    "page": 334,
+    "topic": "complications",
+    "q": "What does extreme burning or electric pain during a draw suggest?",
+    "a": "Potential nerve irritation or injury; stop the draw immediately."
+  },
+  {
+    "id": "cc-9-091",
+    "ch": 9,
+    "page": 334,
+    "topic": "complications",
+    "q": "What are petechiae?",
+    "a": "Tiny, flat, red or purplish spots from capillary bleeding under skin."
+  },
+  {
+    "id": "cc-9-092",
+    "ch": 9,
+    "page": 334,
+    "topic": "complications",
+    "q": "What is thrombocytopenia?",
+    "a": "An abnormally low platelet count."
+  },
+  {
+    "id": "cc-9-093",
+    "ch": 9,
+    "page": 334,
+    "topic": "complications",
+    "q": "What is the immediate response to a seizure during collection?",
+    "a": "Stop collection safely, protect the person from injury, and summon help."
+  },
+  {
+    "id": "cc-9-094",
+    "ch": 9,
+    "page": 335,
+    "topic": "procedural errors",
+    "q": "What is a common complication of venipuncture?",
+    "a": "Hematoma or bruising from blood leaking into tissue."
+  },
+  {
+    "id": "cc-9-095",
+    "ch": 9,
+    "page": 335,
+    "topic": "procedural errors",
+    "q": "What might cause a hematoma during a blood draw?",
+    "a": "Vein injury, probing, or poor post-draw pressure."
+  },
+  {
+    "id": "cc-9-096",
+    "ch": 9,
+    "page": 336,
+    "topic": "hematoma",
+    "q": "What should you do if a hematoma develops while drawing?",
+    "a": "Stop promptly, remove the needle, and apply firm pressure."
+  },
+  {
+    "id": "cc-9-097",
+    "ch": 9,
+    "page": 336,
+    "topic": "hematoma",
+    "q": "How long should pressure be held after accidental arterial puncture?",
+    "a": "At least 3–5 minutes or until bleeding stops, per policy."
+  },
+  {
+    "id": "cc-9-098",
+    "ch": 9,
+    "page": 336,
+    "topic": "iatrogenic anemia",
+    "q": "What is iatrogenic anemia?",
+    "a": "Anemia caused by blood loss from testing or treatment."
+  },
+  {
+    "id": "cc-9-099",
+    "ch": 9,
+    "page": 336,
+    "topic": "iatrogenic anemia",
+    "q": "Who is especially vulnerable to iatrogenic blood loss?",
+    "a": "Infants and patients requiring frequent large-volume blood draws."
+  },
+  {
+    "id": "cc-9-100",
+    "ch": 9,
+    "page": 336,
+    "topic": "arterial puncture",
+    "q": "What may indicate accidental arterial puncture?",
+    "a": "Rapid tube filling or spurting, sometimes bright red blood."
+  },
+  {
+    "id": "cc-9-101",
+    "ch": 9,
+    "page": 337,
+    "topic": "infection prevention",
+    "q": "Why must needles remain sealed until use?",
+    "a": "To preserve sterility and reduce contamination."
+  },
+  {
+    "id": "cc-9-102",
+    "ch": 9,
+    "page": 337,
+    "topic": "infection prevention",
+    "q": "Why is re-touching a cleaned site risky?",
+    "a": "It may reintroduce microorganisms."
+  },
+  {
+    "id": "cc-9-103",
+    "ch": 9,
+    "page": 337,
+    "topic": "nerve injury",
+    "q": "What symptoms suggest a possible nerve injury?",
+    "a": "Severe pain, burning, numbness, or electric-shock sensation."
+  },
+  {
+    "id": "cc-9-104",
+    "ch": 9,
+    "page": 337,
+    "topic": "nerve injury",
+    "q": "What must be done if a patient reports nerve-type pain during a draw?",
+    "a": "Terminate the procedure and notify the appropriate provider."
+  },
+  {
+    "id": "cc-9-105",
+    "ch": 9,
+    "page": 338,
+    "topic": "reflux",
+    "q": "What is additive reflux?",
+    "a": "Blood or additive-containing fluid flowing backward toward the patient's vein."
+  },
+  {
+    "id": "cc-9-106",
+    "ch": 9,
+    "page": 338,
+    "topic": "reflux",
+    "q": "How can tube position reduce reflux risk?",
+    "a": "Keep the patient's arm downward and the collection tube below the site."
+  },
+  {
+    "id": "cc-9-107",
+    "ch": 9,
+    "page": 338,
+    "topic": "vein damage",
+    "q": "What can repeated blind probing do to a vein?",
+    "a": "Cause injury, scarring, and reduced future accessibility."
+  },
+  {
+    "id": "cc-9-108",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemoconcentration",
+    "q": "What is venous stasis?",
+    "a": "Slowing or trapping of venous blood flow, such as from a tight tourniquet."
+  },
+  {
+    "id": "cc-9-109",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemoconcentration",
+    "q": "How can prolonged tourniquet use change test results?",
+    "a": "It concentrates some analytes and can give falsely high values."
+  },
+  {
+    "id": "cc-9-110",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemoconcentration",
+    "q": "Which analytes can rise with hemoconcentration?",
+    "a": "Protein-bound substances, RBCs, protein, calcium, and cholesterol."
+  },
+  {
+    "id": "cc-9-111",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemoconcentration",
+    "q": "What is the recommended tourniquet time limit?",
+    "a": "Release within 1 minute."
+  },
+  {
+    "id": "cc-9-112",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemoconcentration",
+    "q": "Why is fist pumping discouraged during blood collection?",
+    "a": "It can significantly raise potassium and alter other analytes."
+  },
+  {
+    "id": "cc-9-113",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemoconcentration",
+    "q": "Why should forceful vein probing and massage be avoided?",
+    "a": "They may cause injury and alter the sample's composition."
+  },
+  {
+    "id": "cc-9-114",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemolysis",
+    "q": "What is hemolysis?",
+    "a": "Rupture of red blood cells with release of hemoglobin into specimen fluid."
+  },
+  {
+    "id": "cc-9-115",
+    "ch": 9,
+    "page": 339,
+    "topic": "hemolysis",
+    "q": "What visible color may indicate hemolysis in plasma or serum?",
+    "a": "Pink to red discoloration."
+  },
+  {
+    "id": "cc-9-116",
+    "ch": 9,
+    "page": 340,
+    "topic": "hemolysis",
+    "q": "Why is hemolysis a problem for laboratory results?",
+    "a": "RBC contents can falsely elevate or interfere with several analytes."
+  },
+  {
+    "id": "cc-9-117",
+    "ch": 9,
+    "page": 340,
+    "topic": "hemolysis",
+    "q": "Which electrolyte is commonly falsely elevated by hemolysis?",
+    "a": "Potassium."
+  },
+  {
+    "id": "cc-9-118",
+    "ch": 9,
+    "page": 340,
+    "topic": "hemolysis",
+    "q": "What is one common procedural cause of hemolysis?",
+    "a": "Using excessive force or a very small needle during collection or transfer."
+  },
+  {
+    "id": "cc-9-119",
+    "ch": 9,
+    "page": 340,
+    "topic": "hemolysis",
+    "q": "Can shaking an additive tube cause hemolysis?",
+    "a": "Yes. Mix by gentle inversion."
+  },
+  {
+    "id": "cc-9-120",
+    "ch": 9,
+    "page": 341,
+    "topic": "short draw",
+    "q": "What is a short draw?",
+    "a": "A tube containing less blood than its intended fill volume."
+  },
+  {
+    "id": "cc-9-121",
+    "ch": 9,
+    "page": 341,
+    "topic": "short draw",
+    "q": "Why are underfilled light-blue tubes especially concerning?",
+    "a": "They have the wrong 9:1 blood-to-citrate ratio, affecting clotting tests."
+  },
+  {
+    "id": "cc-9-122",
+    "ch": 9,
+    "page": 341,
+    "topic": "short draw",
+    "q": "Can underfilled EDTA tubes alter blood cell measurements?",
+    "a": "Yes. Excess additive can distort cell morphology and counts."
+  },
+  {
+    "id": "cc-9-123",
+    "ch": 9,
+    "page": 341,
+    "topic": "short draw",
+    "q": "When is a manufacturer-designated short-draw tube acceptable?",
+    "a": "When filled to its marked level with the intended additive ratio."
+  },
+  {
+    "id": "cc-9-124",
+    "ch": 9,
+    "page": 341,
+    "topic": "contamination",
+    "q": "What false chemistry changes can EDTA contamination cause?",
+    "a": "High potassium and low calcium."
+  },
+  {
+    "id": "cc-9-125",
+    "ch": 9,
+    "page": 341,
+    "topic": "contamination",
+    "q": "Why is correct tube order critical to specimen quality?",
+    "a": "It reduces additive carryover between tubes."
+  },
+  {
+    "id": "cc-9-126",
+    "ch": 9,
+    "page": 341,
+    "topic": "contamination",
+    "q": "Why should the puncture site be allowed to dry fully?",
+    "a": "To reduce alcohol contamination, hemolysis, and stinging."
+  },
+  {
+    "id": "cc-9-127",
+    "ch": 9,
+    "page": 342,
+    "topic": "contamination",
+    "q": "How can sweat contaminate a collected specimen?",
+    "a": "It may alter measured sodium or chloride levels."
+  },
+  {
+    "id": "cc-9-128",
+    "ch": 9,
+    "page": 342,
+    "topic": "contamination",
+    "q": "Why must the correct tube be used for each ordered test?",
+    "a": "Wrong additives or tube properties can invalidate results."
+  },
+  {
+    "id": "cc-9-129",
+    "ch": 9,
+    "page": 342,
+    "topic": "tube issues",
+    "q": "Why should expired collection tubes be discarded?",
+    "a": "Vacuum or additive function may be compromised."
+  },
+  {
+    "id": "cc-9-130",
+    "ch": 9,
+    "page": 342,
+    "topic": "troubleshooting",
+    "q": "What three actions guide safe failed-draw troubleshooting?",
+    "a": "Stop, assess, and correct."
+  },
+  {
+    "id": "cc-9-131",
+    "ch": 9,
+    "page": 342,
+    "topic": "troubleshooting",
+    "q": "What may happen if a needle bevel is partly outside the skin?",
+    "a": "Vacuum loss and poor or absent tube filling."
+  },
+  {
+    "id": "cc-9-132",
+    "ch": 9,
+    "page": 343,
+    "topic": "troubleshooting",
+    "q": "What if the needle is not inserted far enough?",
+    "a": "It may not enter the vein or may only partly enter the lumen."
+  },
+  {
+    "id": "cc-9-133",
+    "ch": 9,
+    "page": 343,
+    "topic": "troubleshooting",
+    "q": "Why should needle adjustments be small and controlled?",
+    "a": "Excess movement risks vein, artery, or nerve injury."
+  },
+  {
+    "id": "cc-9-134",
+    "ch": 9,
+    "page": 344,
+    "topic": "troubleshooting",
+    "q": "What if the needle bevel has passed completely through the vein?",
+    "a": "Blood can leak into tissue and form a hematoma."
+  },
+  {
+    "id": "cc-9-135",
+    "ch": 9,
+    "page": 344,
+    "topic": "troubleshooting",
+    "q": "What if the bevel rests against a vein wall?",
+    "a": "The wall can block blood flow into the needle."
+  },
+  {
+    "id": "cc-9-136",
+    "ch": 9,
+    "page": 344,
+    "topic": "troubleshooting",
+    "q": "What happens if a bevel catches a venous valve?",
+    "a": "Blood may stop flowing despite the needle being in the vein."
+  },
+  {
+    "id": "cc-9-137",
+    "ch": 9,
+    "page": 345,
+    "topic": "troubleshooting",
+    "q": "What if the needle is beside rather than inside the vein?",
+    "a": "There may be no blood flow and further blind probing is unsafe."
+  },
+  {
+    "id": "cc-9-138",
+    "ch": 9,
+    "page": 345,
+    "topic": "troubleshooting",
+    "q": "Why might a vein collapse during collection?",
+    "a": "Excessive tube vacuum or a tourniquet that is too tight."
+  },
+  {
+    "id": "cc-9-139",
+    "ch": 9,
+    "page": 345,
+    "topic": "troubleshooting",
+    "q": "What is the safe response when needle repositioning is unsuccessful?",
+    "a": "End the attempt and choose another appropriate site or collector."
+  },
+  {
+    "id": "cc-9-140",
+    "ch": 9,
+    "page": 346,
+    "topic": "troubleshooting",
+    "q": "What can cause a tube to lose its vacuum before collection?",
+    "a": "Cracking, dropping, expiration, or improper storage."
+  },
+  {
+    "id": "cc-9-141",
+    "ch": 9,
+    "page": 346,
+    "topic": "troubleshooting",
+    "q": "What should be tried if a properly positioned needle yields no blood?",
+    "a": "Check for a faulty tube and try a fresh compatible tube."
+  },
+  {
+    "id": "cc-9-142",
+    "ch": 9,
+    "page": 346,
+    "topic": "troubleshooting",
+    "q": "Should a cracked or dropped blood collection tube be used?",
+    "a": "No. Discard it because of possible vacuum loss or contamination."
+  },
+  {
+    "id": "cc-9-143",
+    "ch": 9,
+    "page": 347,
+    "topic": "review",
+    "q": "What should a patient do when experiencing severe pain during venipuncture?",
+    "a": "Tell the collector; the draw should be stopped and assessed."
+  },
+  {
+    "id": "cc-9-144",
+    "ch": 9,
+    "page": 347,
+    "topic": "review",
+    "q": "A hissing tube and loss of blood flow may indicate what?",
+    "a": "Loss of tube vacuum, possibly from a partially exposed bevel."
+  },
+  {
+    "id": "cc-9-145",
+    "ch": 9,
+    "page": 349,
+    "topic": "case study",
+    "q": "Blood spurts into the first tube, then stops. What must be assessed?",
+    "a": "Needle position and a possible arterial puncture or vein-wall problem."
+  }
+];
+
+</script><script>
+/* Cindy Cards: original, dependency-free, keyboard/Meta directional-input flashcard app. */
+(() => {
+  'use strict';
+  const KEY = 'cindy-cards.v1';
+  const LEGACY_KEY = 'pulsecards.v1';
+  const $ = (s) => document.querySelector(s);
+  const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const shuffled = (input) => {const a=[...input];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+  const load = () => {try {return JSON.parse((localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY))) || {};}catch{return {};}};
+  const stored = load();
+  try { if (!localStorage.getItem(KEY) && localStorage.getItem(LEGACY_KEY)) localStorage.setItem(KEY, localStorage.getItem(LEGACY_KEY)); } catch {}
+  const userDecks = Array.isArray(stored.decks) ? stored.decks : [];
+  const progress = stored.progress && typeof stored.progress === 'object' ? stored.progress : {};
+  const safeCards = Array.isArray(window.STARTER_CARDS) ? window.STARTER_CARDS : [];
+  const builtin = [
+    {id:'all', name:'Chapters 7, 8 & 9', short:'All chapters', cards:safeCards},
+    {id:'ch7', name:'Chapter 7', short:'Equipment & additives', cards:safeCards.filter(c=>c.ch===7)},
+    {id:'ch8', name:'Chapter 8', short:'Venipuncture', cards:safeCards.filter(c=>c.ch===8)},
+    {id:'ch9', name:'Chapter 9', short:'Preanalytical care', cards:safeCards.filter(c=>c.ch===9)}
+  ];
+  const decks = () => [...builtin, ...userDecks];
+  const getDeck = () => decks().find(d=>d.id===state.deckId) || builtin[0];
+  const pFor = id => progress[id] || (progress[id] = {known:false,learned:false,misses:0,correct:0});
+  const save = () => {try{localStorage.setItem(KEY, JSON.stringify({decks:userDecks,progress}));}catch(err){console.warn('Could not save locally',err);}};
+  const qs = new URLSearchParams(location.search);
+  const state = {
+    screen:'home', deckId:stored.activeDeck || 'all', glasses:qs.get('glasses')==='1' || /\bMRBD\b|Meta Ray-Ban Display/i.test(navigator.userAgent),
+    seq:[], index:0, flipped:false, quiz:null, finished:null, navFocus:0, importText:'', importName:'', importNotice:''
+  };
+  if (!decks().some(d=>d.id===state.deckId)) state.deckId='all';
+  const trackDeck = () => {stored.activeDeck=state.deckId; saveActive();};
+  function saveActive(){try {const value=JSON.parse(localStorage.getItem(KEY)||'{}');value.activeDeck=state.deckId;localStorage.setItem(KEY,JSON.stringify(value));}catch{}}
+  const percent = (n, d) => d ? Math.round(n/d*100) : 0;
+  const niceTime = (seconds) => {seconds=Math.max(0,Math.ceil(seconds));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;};
+
+  function icon(c){return ({flash:'▣',learn:'✦',cram:'ϟ'})[c]||'•';}
+  function renderHome(){
+    const d=getDeck(), cards=d.cards, known=cards.filter(c=>pFor(c.id).known).length, mastered=cards.filter(c=>pFor(c.id).learned).length;
+    const sidebar = `<aside class="sidebar"><div class="brand"><span class="brand-mark">✚</span> Cindy Cards</div><div><div class="nav-label">STUDY DECKS</div><div class="deck-list">${decks().map(deck=>`<button data-nav data-key="deck-${escapeHTML(deck.id)}" data-action="deck" data-id="${escapeHTML(deck.id)}" class="deck-btn ${deck.id===state.deckId?'active':''}"><span class="deck-dot"></span>${escapeHTML(deck.name)}</button>`).join('')}</div></div><div class="sidebar-bottom"><button data-nav data-key="import-sidebar" class="outline-btn" data-action="import">＋ Import a deck</button><div class="tiny-muted">Your practice history stays in this browser. No account or AI API needed.</div></div></aside>`;
+    return `<div class="app-shell">${sidebar}<main class="content"><div class="topbar"><div class="mobile-header"><span class="brand-mark" style="width:30px;height:30px;font-size:19px">✚</span> Cindy Cards</div><div class="badge"><span class="status-dot"></span> Ready to study</div><div class="topbar-actions"><button data-nav data-key="cycle" data-action="cycle" class="mini-btn" title="Switch chapter/deck">${escapeHTML(d.short || d.name)} ▾</button><button data-nav data-key="view" data-action="view" class="mini-btn" title="Switch to or from glasses preview">${state.glasses?'PC view':'Glasses view'}</button></div></div>
+      <div class="eyebrow">PHLEBOTOMY • STUDY SPACE</div><h1 class="headline">Learn it. <em>Remember it.</em></h1><p class="lede">${escapeHTML(d.name)} · ${cards.length} flashcards. Practice what matters and keep track of what sticks.</p>
+      <div class="stats"><div class="stat"><div class="stat-number">${cards.length}</div><div class="stat-caption">Total cards</div></div><div class="stat"><div class="stat-number">${known}</div><div class="stat-caption">Marked known</div></div><div class="stat"><div class="stat-number">${mastered}</div><div class="stat-caption">Learn mastered</div></div></div>
+      <div class="section-heading"><h2>Choose a study mode</h2><span class="result-chip">${escapeHTML(d.short||'')}</span></div>
+      <div class="modes">
+        <button data-nav data-key="mode-flash" class="mode-card flash" data-action="flash"><span class="mode-icon">${icon('flash')}</span><span class="mode-name">Flashcards</span><span class="mode-desc">Flip through questions and answers. Flag what you know and what needs another look.</span><span class="mode-cta">Start reviewing →</span></button>
+        <button data-nav data-key="mode-learn" class="mode-card learn" data-action="learn"><span class="mode-icon">${icon('learn')}</span><span class="mode-name">Learn</span><span class="mode-desc">Practice with multiple choice. Get each answer right twice to master a card.</span><span class="mode-cta">Start learning →</span></button>
+        <button data-nav data-key="mode-cram" class="mode-card cram" data-action="cram"><span class="mode-icon">${icon('cram')}</span><span class="mode-name">Cram</span><span class="mode-desc">Three-minute sprint. Answer fast and revisit the questions you miss.</span><span class="mode-cta">Start a sprint →</span></button>
+      </div><div class="note"><b>Study source:</b> ${safeCards.length} original practice cards based on your photographed textbook pages (Chapters 7–9). Review your course materials and local procedures for clinical requirements. <button data-nav data-key="export" data-action="export" class="export-link">Export selected deck for Quizlet ↗</button> <button data-nav data-key="import-mobile" data-action="import" class="danger-link" style="color:var(--mint)">Import more cards →</button></div></main></div>`;
+  }
+  function studyHeader(mode, value, max){const d=getDeck();return `<div class="study-top"><button data-action="home" class="back-btn">← Decks</button><span class="name">${escapeHTML(d.name)}</span><span class="mode-tag">${escapeHTML(mode)}</span></div><div class="progress-header"><span>${escapeHTML(value)}</span><span>${escapeHTML(max)}</span></div>`;}
+  function renderFlash(){
+    const d=getDeck(), count=state.seq.length;
+    if (!count) return `<div class="app-shell"><main class="content"><div class="study-shell"><p>No cards in this deck.</p><button data-action="home" class="action-btn">Back</button></div></main></div>`;
+    const card=state.seq[state.index], side=state.flipped?'ANSWER':'QUESTION', body=state.flipped?card.a:card.q;
+    return `<div class="app-shell"><main class="content"><div class="study-shell">${studyHeader('Flashcards',`Card ${state.index+1} of ${count}`,`${state.seq.filter(c=>pFor(c.id).known).length} known`)}<div class="progress-track"><div class="progress-fill" style="width:${percent(state.index+1,count)}%"></div></div><div class="source-ref">${card.page?`Chapter ${card.ch} · p. ${card.page} · ${escapeHTML(card.topic)}`:`${escapeHTML(d.name)}`}</div><button class="flashcard" data-action="flip" aria-label="Flip flashcard"><span class="card-side">${side}</span><span class="card-text">${escapeHTML(body)}</span><span class="card-hint">${state.flipped?'Tap or press Enter for question':'Tap or press Enter to reveal answer'}</span></button><div class="card-actions"><div class="action-group"><button data-action="prev" class="action-btn" aria-label="Previous card">← Prev</button><button data-action="next" class="action-btn" aria-label="Next card">Next →</button></div><div class="action-group"><button data-action="again" class="action-btn again">↓ Again</button><button data-action="known" class="action-btn know">↑ Know it</button></div></div><div class="key-help">Glasses / keyboard: ← → move · Enter flip · ↑ know · ↓ again · Esc decks<br>PC: click any card or button · <button data-action="shuffle" class="danger-link" style="color:var(--blue)">Shuffle deck</button></div></div></main></div>`;
+  }
+  function freshOptions(card, pool){
+    const other=shuffled(pool.filter(c=>c.id!==card.id && c.a!==card.a));
+    const picked=[], seen=new Set([card.a]);
+    const add=list=>{for(const c of list){if(!seen.has(c.a)){picked.push(c.a);seen.add(c.a);}if(picked.length===3)break;}};
+    add(other.filter(c=>c.topic===card.topic && c.ch===card.ch));
+    if(picked.length<3) add(other.filter(c=>c.ch===card.ch));
+    if(picked.length<3) add(other);
+    return shuffled([card.a,...picked.slice(0,3)]);
+  }
+  function nextQuestion(){
+    const q=state.quiz;
+    if(!q || !q.queue.length){finishQuiz();return;}
+    q.current=q.queue[0];
+    const card=q.cards.find(c=>c.id===q.current);
+    q.options=freshOptions(card,getDeck().cards);
+    q.selected=0;
+    q.feedback=null;
+  }
+  function startMode(mode){
+    const d=getDeck();if(!d.cards.length)return;
+    state.screen=mode;state.finished=null;
+    if(mode==='flash') {state.seq=[...d.cards];state.index=0;state.flipped=false;state.quiz=null;}
+    else {
+      const ordered=shuffled(d.cards).sort((a,b)=>(Number(pFor(a.id).learned)-Number(pFor(b.id).learned)) || (pFor(a.id).correct - pFor(b.id).correct));
+      const cards=ordered.slice(0,Math.min(12,d.cards.length));
+      state.quiz={mode,cards,queue:cards.map(c=>c.id),streak:{},current:null,options:[],selected:0,feedback:null,correct:0,attempts:0,mastered:0,misses:0,deadline:mode==='cram'?Date.now()+180000:null};
+      nextQuestion();
+    }
+    render();
+  }
+  function answerQuiz(){const q=state.quiz;if(!q || q.feedback)return;
+    const card=q.cards.find(c=>c.id===q.current), answer=q.options[q.selected];if(!card)return;
+    const correct=answer===card.a;q.attempts++;if(correct)q.correct++;else q.misses++;
+    const p=pFor(card.id);if(correct)p.correct++;else p.misses++;
+    const previous=q.streak[card.id]||0;
+    q.streak[card.id]=correct?previous+1:0;
+    if (q.mode==='learn' && q.streak[card.id]>=2) p.learned=true;
+    q.feedback={correct,answer};save();render();
+  }
+  function afterAnswer(){const q=state.quiz;if(!q)return;
+    const id=q.current, correct=q.feedback?.correct;
+    q.queue.shift();
+    if(q.mode==='learn'){
+      if((q.streak[id]||0)>=2)q.mastered++;
+      else q.queue.push(id);
+    }else if(!correct){q.queue.push(id);}
+    if(q.mode==='cram' && Date.now()>=q.deadline){finishQuiz();return;}
+    if(!q.queue.length){finishQuiz();return;}
+    nextQuestion();render();
+  }
+  function finishQuiz(){const q=state.quiz;if(!q)return;state.finished={mode:q.mode,attempts:q.attempts,correct:q.correct,misses:q.misses,mastered:q.mastered,total:q.cards.length};state.quiz=null;state.screen='results';render();}
+  function renderQuiz(){const q=state.quiz;if(!q)return '';
+    const card=q.cards.find(c=>c.id===q.current), isCram=q.mode==='cram';
+    const progressCount=isCram?q.cards.length-Math.min(q.queue.length,q.cards.length):q.mastered;
+    const progressMax=q.cards.length;
+    const timer=isCram?`<span class="timer" id="clock">${niceTime((q.deadline-Date.now())/1000)}</span>`:`<span class="result-chip">${q.mastered} mastered · ${q.misses} misses</span>`;
+    return `<div class="app-shell"><main class="content"><div class="study-shell">${studyHeader(isCram?'Cram sprint':'Learn', isCram?`${q.attempts} answered · ${q.misses} wrong`:`Mastered ${q.mastered} of ${q.cards.length}`,isCram?'3-minute sprint':'Two correct to master')}<div class="progress-track"><div class="progress-fill" style="width:${percent(progressCount,progressMax)}%"></div></div><div class="study-top"><span class="eyebrow">${isCram?'SPEED ROUND':'PRACTICE QUESTION'}</span>${timer}</div><div class="question-box"><p class="question-label">${card.page?`Chapter ${card.ch} · p. ${card.page} · ${escapeHTML(card.topic)}`:"Choose the correct answer"}</p><div class="question-text">${escapeHTML(card.q)}</div></div><div class="answers">${q.options.map((opt,i)=>{const given=q.feedback;let cls=q.selected===i?' chosen':'';if(given){if(opt===card.a)cls+=' correct';else if(opt===given.answer)cls+=' wrong';}return `<button class="option${cls}" data-action="option" data-option="${i}" ${given?'disabled':''} aria-pressed="${q.selected===i}" ><span class="letter">${'ABCD'[i]}</span><span>${escapeHTML(opt)}</span></button>`;}).join('')}</div>
+    ${q.feedback?`<div class="feedback ${q.feedback.correct?'':'bad'}"><strong>${q.feedback.correct?'Correct!':'Not quite.'}</strong> ${q.feedback.correct?(q.mode==='learn' && q.streak[q.current]<2?'One more correct answer to master it.':'Nice work.'): `Correct answer: ${escapeHTML(card.a)}`}</div>`:''}
+    <div class="study-footer"><span class="result-chip">${isCram?'Missed cards come back':'Keep going until each card is mastered'}</span><button class="action-btn primary" data-action="${q.feedback?'advance':'submit'}">${q.feedback?'Continue →':'Check answer'}</button></div><div class="key-help">Glasses / keyboard: ↑↓←→ select answer · Enter ${q.feedback?'continue':'check'} · Esc decks<br>PC: click an option to check it</div></div></main></div>`;
+  }
+  function renderResults(){const r=state.finished;const isCram=r.mode==='cram';return `<div class="app-shell"><main class="content"><div class="study-shell"><div class="study-top"><button class="back-btn" data-action="home">← Decks</button><span class="mode-tag">${isCram?'CRAM COMPLETE':'LEARN COMPLETE'}</span></div><div class="summary"><div class="summary-emoji">${isCram?'⚡':'✦'}</div><h2>${isCram?'Sprint finished!':'Session mastered!'}</h2><p>${isCram?'Great work under the clock. Try another sprint or review the cards again.':'Each practice card was answered correctly twice in this session.'}</p><div class="summary-grid"><div><b>${r.correct}</b><span>Correct answers</span></div><div><b>${r.misses}</b><span>Missed answers</span></div><div><b>${percent(r.correct,r.attempts)}%</b><span>Accuracy</span></div></div><div class="action-group" style="justify-content:center"><button data-nav data-key="restart" data-action="restart" class="action-btn primary">Practice again</button><button data-nav data-key="home" data-action="home" class="action-btn">Back to decks</button></div></div></div></main></div>`;}
+  function renderImport(){return `<div class="modal-screen"><div class="modal-box"><button data-action="home" class="back-btn">← Back to decks</button><p class="eyebrow">ADD YOUR OWN MATERIAL</p><h1>Import flashcards</h1><p>Paste Quizlet export text (one card per line, with a tab between question and answer) or choose a TSV, TXT, or CSV file. Imported decks stay on this device unless you add them to the hosted site's source files.</p><label class="field-label" for="deckname">Deck name</label><input id="deckname" class="text-field" maxlength="80" placeholder="Chapter 7 textbook review" value="${escapeHTML(state.importName)}"><label class="field-label" for="deckfile">Upload study cards</label><input id="deckfile" class="text-field" type="file" accept=".tsv,.txt,.csv,.json,text/plain,text/tab-separated-values,text/csv,application/json"><label class="field-label" for="importtext">Or paste questions and answers</label><textarea id="importtext" class="text-field import-text" placeholder="What is EDTA?&#9;An additive that binds calcium.&#10;What is a CBC?&#9;Complete blood count.">${escapeHTML(state.importText)}</textarea><div class="modal-buttons"><button data-action="create-deck" class="action-btn primary">Import cards</button><button data-action="home" class="action-btn">Cancel</button></div><p class="import-status" id="importstatus">${escapeHTML(state.importNotice)}</p></div></div>`;}
+  function render(){document.body.classList.toggle('glasses',state.glasses);const root=$('#app');
+    root.innerHTML=state.screen==='home'?renderHome():state.screen==='flash'?renderFlash():['learn','cram'].includes(state.screen)?renderQuiz():state.screen==='results'?renderResults():renderImport();
+    document.title=`${state.screen==='home'?'Study Deck':state.screen==='results'?'Results':state.screen} · Cindy Cards`;
+  }
+  function changeDeck(id){state.deckId=id;state.screen='home';trackDeck();render();}
+  function step(n){if(!state.seq.length)return;state.index=(state.index+n+state.seq.length)%state.seq.length;state.flipped=false;render();}
+  function rating(isKnown){const c=state.seq[state.index];if(!c)return;const p=pFor(c.id);p.known=isKnown;if(!isKnown)p.misses++;save();step(1);}
+  function parseImported(input){const text=input.replace(/^\uFEFF/,'').trim();if(!text)return [];
+    if(text[0]==='['){try{const obj=JSON.parse(text);if(Array.isArray(obj))return obj.map(c=>({q:String(c.q??c.question??c.front??c.term??''),a:String(c.a??c.answer??c.back??c.definition??'')})).filter(c=>c.q&&c.a);}catch{}}
+    const result=[];
+    for(const line of text.split(/\r?\n/)){
+      if(!line.trim())continue;
+      let fields;
+      if(line.includes('\t'))fields=line.split(/\t/);
+      else if(line.includes(' | '))fields=line.split(/ \| /);
+      else if(line.includes(';'))fields=line.split(';');
+      else if(line.includes(',')){
+        // Standard quoted CSV fields and double-quote escaping.
+        fields=[];let v='',inside=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(inside&&line[i+1]==='"'){v+='"';i++;}else inside=!inside;}else if(ch===','&&!inside){fields.push(v);v='';}else v+=ch;}fields.push(v);
+      }else continue;
+      if(fields.length>=2){const q=fields[0].trim().replace(/^"|"$/g,''),a=fields.slice(1).join(line.includes('\t')?'\t':', ').trim();if(q&&a)result.push({q,a});}
+    }
+    return result;
+  }
+  function importDeck(){state.importName=$('#deckname')?.value.trim()||'';state.importText=$('#importtext')?.value||'';
+    const cards=parseImported(state.importText);
+    if(!cards.length){state.importNotice='No cards found. Use a TAB between each question and answer.';$('#importstatus').textContent=state.importNotice;return;}
+    const id='custom-'+Date.now()+'-'+Math.floor(Math.random()*1000);
+    userDecks.push({id,name:state.importName||`Imported deck (${cards.length})`,short:'Custom deck',cards:cards.map((c,i)=>({...c,id:id+'-'+i,ch:0}))});
+    state.importNotice='';state.importName='';state.importText='';save();changeDeck(id);
+  }
+  function downloadDeck(){const deck=getDeck();const body=deck.cards.map(c=>`${c.q.replace(/[\t\r\n]+/g,' ')}\t${c.a.replace(/[\t\r\n]+/g,' ')}`).join('\n');const file=new Blob([body],{type:'text/tab-separated-values;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=deck.name.replace(/[^\w-]+/g,'_')+'.tsv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+  function handleAction(action, el){
+    switch(action){
+      case 'home':state.screen='home';state.quiz=null;state.finished=null;render();break;
+      case 'view':state.glasses=!state.glasses;render();break;
+      case 'cycle':{const ds=decks(),i=ds.findIndex(d=>d.id===state.deckId);changeDeck(ds[(i+1)%ds.length].id);break;}
+      case 'deck':changeDeck(el.dataset.id);break;
+      case 'flash':case 'learn':case 'cram':startMode(action);break;
+      case 'flip':state.flipped=!state.flipped;render();break;
+      case 'prev':step(-1);break;
+      case 'next':step(1);break;
+      case 'known':rating(true);break;
+      case 'again':rating(false);break;
+      case 'shuffle':state.seq=shuffled(state.seq);state.index=0;state.flipped=false;render();break;
+      case 'option':{const q=state.quiz;if(!q||q.feedback)return;q.selected=Number(el.dataset.option);answerQuiz();break;}
+      case 'submit':answerQuiz();break;
+      case 'advance':afterAnswer();break;
+      case 'restart':startMode(state.finished?.mode||'flash');break;
+      case 'import':state.screen='import';render();break;
+      case 'create-deck':importDeck();break;
+      case 'export':downloadDeck();break;
+    }
+  }
+  $('#app').addEventListener('click',(event)=>{const el=event.target.closest('[data-action]');if(el)handleAction(el.dataset.action,el);});
+  $('#app').addEventListener('change',async(event)=>{if(event.target.id==='deckfile'){const file=event.target.files[0];if(!file)return;try{state.importText=await file.text();$('#importtext').value=state.importText;$('#importstatus').textContent=`Loaded ${file.name}. Click Import cards to save.`;}catch{$('#importstatus').textContent='Could not read this file.';}}});
+  function navHome(key){const nodes=Array.from(document.querySelectorAll('[data-nav]')).filter(el=>el.getClientRects().length);
+    if(!nodes.length)return;
+    const active=document.activeElement;const current=nodes.includes(active)?active:null;
+    if(key==='Enter'){(current||nodes.find(el=>el.dataset.key==='mode-flash')||nodes[0]).click();return;}
+    if(!current){(nodes.find(el=>el.dataset.key==='mode-flash')||nodes[0]).focus();return;}
+    const rect=current.getBoundingClientRect(),a={x:rect.left+rect.width/2,y:rect.top+rect.height/2};
+    const candidates=nodes.filter(n=>n!==current).map(n=>{const b=n.getBoundingClientRect(),dx=b.left+b.width/2-a.x,dy=b.top+b.height/2-a.y;
+      const valid=key==='ArrowRight'?dx>12:key==='ArrowLeft'?dx< -12:key==='ArrowDown'?dy>10:dy< -10;
+      const primary=key==='ArrowLeft'||key==='ArrowRight'?Math.abs(dx):Math.abs(dy);
+      const cross=key==='ArrowLeft'||key==='ArrowRight'?Math.abs(dy):Math.abs(dx);
+      return {node:n,valid,score:primary+cross*2};}).filter(x=>x.valid).sort((x,y)=>x.score-y.score);
+    if(candidates[0]) candidates[0].node.focus();
+  }
+  document.addEventListener('keydown',(e)=>{
+    const key=e.key;
+    if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Enter','Escape',' ','1','2','3','4','s','S'].includes(key))return;
+    if(e.target instanceof HTMLElement && ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){
+      if(key==='Escape'){e.preventDefault();state.screen='home';render();}return;
+    }
+    if(key==='Escape'){
+      if(state.screen==='home')return;
+      e.preventDefault();state.screen='home';state.quiz=null;render();return;
+    }
+    if(state.screen==='home' || state.screen==='results'){
+      if(key.startsWith('Arrow')||key==='Enter'){e.preventDefault();navHome(key);}return;
+    }
+    if(state.screen==='import')return;
+    if(state.screen==='flash'){
+      if(key==='Enter'||key===' '){e.preventDefault();state.flipped=!state.flipped;render();}
+      else if(key==='ArrowRight'){e.preventDefault();step(1);}
+      else if(key==='ArrowLeft'){e.preventDefault();step(-1);}
+      else if(key==='ArrowUp'){e.preventDefault();rating(true);}
+      else if(key==='ArrowDown'){e.preventDefault();rating(false);}
+      else if(key.toLowerCase()==='s'){e.preventDefault();handleAction('shuffle');}
+      return;
+    }
+    const q=state.quiz;if(!q)return;
+    if(q.feedback){if(key==='Enter'||key===' '){e.preventDefault();afterAnswer();}return;}
+    if(key==='Enter'||key===' '){e.preventDefault();if(!e.repeat)answerQuiz();return;}
+    if(['1','2','3','4'].includes(key)){e.preventDefault();const i=Number(key)-1;if(i<q.options.length){q.selected=i;answerQuiz();}return;}
+    const cols=(state.glasses||window.innerWidth<=780)?1:2;
+    const delta=key==='ArrowLeft'?-1:key==='ArrowRight'?1:key==='ArrowUp'?-cols:cols;
+    e.preventDefault();q.selected=(q.selected+delta+q.options.length)%q.options.length;render();
+  });
+  setInterval(()=>{if(state.screen==='cram'&&state.quiz){const secs=(state.quiz.deadline-Date.now())/1000;if(secs<=0){finishQuiz();return;}const el=$('#clock');if(el)el.textContent=niceTime(secs);}},250);
+  render();
+  window.CindyCardsTest={parseImported,getDeck,percent};
+})();
+
+</script></body></html>
