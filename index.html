@@ -3341,17 +3341,17 @@ window.STARTER_CARDS = [
       <div class="manager-buttons"><button class="manager-link" data-action="auth-mode" data-mode="${signup||forgot?'login':'signup'}">${signup||forgot?'Already have an account? Sign in':'Create an account'}</button>
       ${signup||forgot?'':`<button class="manager-link" data-action="auth-mode" data-mode="forgot">Forgot password?</button>`}</div></div>`;
     }else if(managerMode==='new-password'){
-      contents=`<div class="manager-panel" style="max-width:490px"><h2>Choose a new password</h2><form id="cc-newpassform"><label class="manager-label" for="cc-newpass">New password</label><input id="cc-newpass" class="manager-input" type="password" autocomplete="new-password" minlength="6" required><div class="manager-buttons"><button class="action-btn primary" type="submit">Update password</button></div></form></div>`;
+      contents=`<div class="manager-panel" style="max-width:490px"><h2>Set your Cindy Cards password</h2><p>You're already signed in. Choose a password to use for future sign-ins on your phone or PC.</p><form id="cc-newpassform"><label class="manager-label" for="cc-newpass">New password</label><input id="cc-newpass" class="manager-input" type="password" autocomplete="new-password" minlength="8" required><label class="manager-label" for="cc-confirmpass">Confirm new password</label><input id="cc-confirmpass" class="manager-input" type="password" autocomplete="new-password" minlength="8" required><div class="manager-buttons"><button class="action-btn primary" type="submit" ${managerBusy?'disabled':''}>Save password</button><button class="action-btn" type="button" data-action="cancel-password">Back to manager</button></div></form></div>`;
     }else if(!editorAllowed){
       contents=`<div class="manager-panel"><h2>You're signed in, but not yet an editor</h2><p>${escapeHTML(authUser.email||'Your account')} can study normally. Ask the site owner to approve this account in Supabase before it can add shared questions.</p>
       <p>Your account ID (copy this to the site owner):</p><div class="manager-identity" id="cc-user-id">${escapeHTML(authUser.id)}</div>
-      <div class="manager-buttons"><button data-action="copy-uid" class="action-btn">Copy account ID</button><button data-action="check-editor" class="action-btn primary">Check approval</button><button data-action="logout" class="action-btn">Sign out</button></div></div>`;
+      <div class="manager-buttons"><button data-action="copy-uid" class="action-btn">Copy account ID</button><button data-action="check-editor" class="action-btn primary">Check approval</button><button data-action="set-password" class="action-btn">Set password</button><button data-action="logout" class="action-btn">Sign out</button></div></div>`;
     }else{
       const editing=cloudCards.find(c=>String(c.id)===String(editingCardId));
       const visible=cloudCards.filter(c=>(c.q+' '+c.a+' '+chapterTitle(c)).toLowerCase().includes(managerFilter.toLowerCase()));
       const pages=Math.max(1,Math.ceil(visible.length/10));managerPage=Math.min(managerPage,pages-1);
       const cards=visible.slice(managerPage*10,(managerPage+1)*10);
-      contents=`<div class="manager-panel"><div class="manager-head"><div><h2>Shared flashcards</h2><p>Signed in as ${escapeHTML(authUser.email||'Editor')} · ${cloudCards.length} cloud cards · Ready for her glasses after refresh</p></div><div class="manager-buttons"><button class="action-btn" data-action="sync-manager">↻ Refresh</button><button class="action-btn" data-action="logout">Sign out</button></div></div></div>
+      contents=`<div class="manager-panel"><div class="manager-head"><div><h2>Shared flashcards</h2><p>Signed in as ${escapeHTML(authUser.email||'Editor')} · ${cloudCards.length} cloud cards · Ready for her glasses after refresh</p></div><div class="manager-buttons"><button class="action-btn" data-action="sync-manager">↻ Refresh</button><button class="action-btn" data-action="set-password">Change password</button><button class="action-btn" data-action="logout">Sign out</button></div></div></div>
       <div class="manager-grid"><section class="manager-panel"><h2>${editing?'Edit shared flashcard':'Add a shared flashcard'}</h2>
       <form id="cc-cardform"><label class="manager-label" for="cc-chapter">Study set / chapter</label><input class="manager-input" id="cc-chapter" maxlength="80" value="${escapeHTML(editing?.chapterLabel||'Chapter 9')}" placeholder="Chapter 10" required>
       <label class="manager-label" for="cc-question">Question</label><textarea class="manager-input" id="cc-question" maxlength="5000" required>${escapeHTML(editing?.q||'')}</textarea>
@@ -3389,10 +3389,14 @@ window.STARTER_CARDS = [
     finally{managerBusy=false;render();}
   }
   async function submitNewPassword(){
-    try{const password=$('#cc-newpass')?.value||'';if(password.length<6)throw new Error('Please use at least 6 characters.');
+    try{const password=$('#cc-newpass')?.value||'', confirm=$('#cc-confirmpass')?.value||'';
+      if(password.length<8)throw new Error('Please use at least 8 characters.');
+      if(password!==confirm)throw new Error('Passwords do not match.');
+      if(!authUser)throw new Error('Please sign in before setting a password.');
+      managerBusy=true;
       const result=await (await ensureAuth()).auth.updateUser({password});if(result.error)throw result.error;
-      managerMode='login';managerInfo('Password updated. You can now use the Flashcard Manager.');
-    }catch(err){managerInfo(String(err?.message||err),true);}
+      managerMode='login';managerBusy=false;managerInfo('Password saved. You can now sign in with your email and new password.');
+    }catch(err){managerBusy=false;managerInfo(String(err?.message||err),true);}
   }
   async function saveCard(){
     if(managerBusy||!editorAllowed)return;
@@ -3611,6 +3615,8 @@ window.STARTER_CARDS = [
       case 'manager':state.screen='manager';managerNotice='';managerError='';render('manager-back');void ensureAuth().catch(()=>{});break;
       case 'auth-retry':authStatus='idle';managerError='';if(authClient)void refreshAuth();else void ensureAuth().catch(()=>{});break;
       case 'auth-mode':managerMode=el.dataset.mode||'login';managerNotice='';managerError='';render();break;
+      case 'set-password':managerMode='new-password';managerNotice='';managerError='';render('cc-newpass');break;
+      case 'cancel-password':managerMode='login';managerNotice='';managerError='';render();break;
       case 'check-editor':void refreshAuth();break;
       case 'copy-uid':{const id=authUser?.id||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(id).then(()=>managerInfo('Account ID copied.')).catch(()=>managerInfo('Select and copy the account ID shown above.'));else managerInfo('Select and copy the account ID shown above.');break;}
       case 'logout':void (async()=>{try{const r=await authClient.auth.signOut();if(r.error)throw r.error;authUser=null;editorAllowed=false;managerMode='login';managerInfo('Signed out.');}catch(err){managerInfo(String(err?.message||err),true);}})();break;
